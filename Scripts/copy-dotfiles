@@ -1,0 +1,7 @@
+#!/bin/sh
+
+destinationPath='/home/artemy/Downloads/Installed/dotfiles'
+
+cp -r ~/.xmonad/ $destinationPath
+cp -r ~/.config/xmobar $destinationPath
+cp ~/.bashrc $destinationPath

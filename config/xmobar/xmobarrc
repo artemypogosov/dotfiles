@@ -1,0 +1,90 @@
+Config {
+        --- appearance
+        font = "xft:Ubuntu:weight=bold:pixelsize=12:antialias=true:hinting=true"
+        , additionalFonts = [ "xft:Mononoki Nerd Font:pixelsize=11:antialias=true:hinting=true"
+                            , "xft:Font Awesome 5 Free Solid:pixelsize=12"
+                            , "xft:Font Awesome 5 Brands:pixelsize=12"]
+       , bgColor = "#282c34"
+       , fgColor = "#ff6c6b"
+       , alpha = 175
+       , position = Static { xpos = 0 , ypos = 0, width = 1366, height = 22 }
+
+       --- general
+       , lowerOnStart = True
+       , pickBroadest = False
+       , allDesktops = False
+       , persistent = True
+       , hideOnStart = False
+       , iconRoot = "/home/artemy/.xmonad/xpm" -- default: "."
+       , overrideRedirect = False
+
+       -- commands to run every N seconds (1s = 10, 1h = 36000)
+       , commands = [ -- Time and date
+                      Run Date "<fn=1>\xf133</fn>    %b %_d - %H:%M " "date" 50
+
+                    ,  Run Kbd [("us", "US"), ("ru", "RU")]
+
+                      -- Network
+                    , Run Network "wlp3s0" [ "-t"        , "<fn=1>\xf0ab</fn>  <rx>  <fn=1>\xf0aa</fn>  <tx>"
+                                          , "-S"        , "True"
+                                          , "-L"        , "1024"
+                                          , "-H"        , "102400"
+                                          , "--low"     , "#b3afc2"
+                                          , "--normal"  , "orange"
+                                          , "--high"    , "red"
+                                          ] 10
+
+                      -- Cpu usage in percent
+                    , Run Cpu [ "-t"       , "<fn=1>\xf108</fn>   cpu: (<total>%)"
+                              , "-L"       , "25"
+                              , "-H"       , "75"
+                              , "--normal" , "orange"
+                              , "--high"   , "red"
+                              ] 20
+
+                      -- Ram used number and percent
+                    , Run Memory ["-t" , "<fn=1>\xf233</fn>   mem: <used>M (<usedratio>%)"] 20
+
+                      -- CPU temp
+                    , Run CoreTemp [ "-t"   , "<fc=#0097A7>T:</fc> <core0> <fc=#0097A7>|</fc> <core1> <fc=#0097A7>°C</fc> "
+                                   , "-L"   , "40"
+                                   , "-H"   , "60"
+                                   , "-l"   , "lightblue"
+                                   , "-n"   , "gray90"
+                                   , "-h"   , "red"] 20
+
+                     -- Volume level
+                   , Run Volume "default" "Master" [] 5
+
+                     -- Battery status (feel free to comment for desktop)
+                   , Run Battery [ "-t"                  , "<acstatus> <fc=#b5bd68><left>%</fc>"
+                                 , "--"
+                                 , "-L"                  , "30"
+                                 , "-H"                  , "75"
+                                 , "-h"                  , "green"
+                                 , "-m"                  , "yellow"
+                                 , "-l"                  , "red"
+                                 , "-i"                  , "<fc=#a3be8c><fn=1>\xf583</fn></fc>"
+                                 , "-o"                  , ""
+                                 , "-O"                  , "<fc=#00C853><fn=1>\xf58a </fn></fc>"
+                                 , "--highs"             , "<fc=#00C853><fn=1>\xf581 </fn></fc>"
+                                 , "--mediums"           , "<fc=#FDD835><fn=1>\xf57d </fn></fc>"
+                                 , "--lows"              , "<fc=#FF3D00><fn=1>\xf582 </fn></fc>"
+                                 , "--on-icon-pattern"   , ""
+                                 , "-A"                  , "30"
+                                 , "-a"                  , "notify-send -u critical 'Battery running out!!'"
+                                 ] 10
+
+                      -- Runs custom script to check for pacman updates.
+                      -- This script is in my dotfiles repo in .local/bin.
+                    , Run Com "/home/artemy/.local/bin/pacupdate" [] "pacupdate" 36000
+
+
+
+                      -- Prints out the left side items such as workspaces, layout, etc.
+                   , Run UnsafeStdinReader
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = " %UnsafeStdinReader% } {%wlp3s0% <fc=#777>|</fc> <fc=#EEFF41> %default:Master% </fc> <fc=#777>|</fc>  %coretemp%  <fc=#777>|</fc> <fc=#B2FF59> <action=`alacritty -e htop`>%cpu%</action> </fc> <fc=#777>|</fc> <fc=#ecbe7b> %memory% </fc> <fc=#777>|</fc> <fc=#c678dd><fn=2></fn> <action=`alacritty -e sudo pacman -Syu`>%pacupdate%</action></fc> <fc=#888>|</fc> %kbd% <fc=#888>|</fc> <fc=#b3afc2>%date%</fc> <fc=#777>|</fc>  %battery% "
+       }
