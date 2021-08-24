@@ -30,7 +30,9 @@ import XMonad.Layout.MultiToggle (mkToggle, EOT(EOT), (??))
 import XMonad.Layout.MultiToggle.Instances (StdTransformers(NBFULL, NOBORDERS))
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Renamed
+import XMonad.Layout.WindowNavigation
 import XMonad.Layout.Simplest
+import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Spacing
 import XMonad.Layout.SubLayouts
 import XMonad.Layout.ToggleLayouts 
@@ -97,6 +99,7 @@ myStartupHook = do
   spawnOnce "trayer --edge bottom --align right --widthtype request --padding 5 --SetDockType true --SetPartialStrut false --expand true --monitor 1 --transparent true --alpha 256 --height 20 &"
   spawnOnce "nm-applet &"
   spawnOnce "blueman-applet &"
+  spawnOnce "pasystray &"
   spawnOnce "/home/artemy/Scripts/init-us.sh"
   spawnOnce "/home/artemy/Scripts/fix-mic-led.sh"
   spawnOnce "/usr/bin/emacs --daemon &" -- emacs daemon for the emacsclient
@@ -126,6 +129,24 @@ tabs     = renamed [Replace "tabs"]
            -- I cannot add spacing to this layout because it will
            -- add spacing between window and tabs which looks bad.
            $ tabbed shrinkText myTabTheme
+threeCol = renamed [Replace "threeCol"]
+           $ smartBorders
+           $ windowNavigation
+           $ addTabs shrinkText myTabTheme
+           $ subLayout [] (smartBorders Simplest)
+           $ limitWindows 7
+           $ ThreeCol 1 (3/100) (1/2)
+threeRow = renamed [Replace "threeRow"]
+           $ smartBorders
+           $ windowNavigation
+           $ addTabs shrinkText myTabTheme
+           $ subLayout [] (smartBorders Simplest)
+           $ limitWindows 7
+           -- Mirror takes a layout and rotates it by 90 degrees.
+           -- So we are applying Mirror to the ThreeCol layout.
+           $ Mirror
+           $ ThreeCol 1 (3/100) (1/2)
+
 
 -- setting colors for tabs layout and tabs sublayout.
 myTabTheme = def { fontName            = myFont
@@ -200,7 +221,8 @@ myKeys =
         -- Useful programs to launch
         , ("M-<Return>", spawn (myTerminal))
         , ("M-f",        spawn (myFileManager))
-        -- , ("M-<Escape>", spawn "dm-tool lock")
+        , ("M-x", spawn ("Scripts/xmenu/xmenu.sh"))
+        -- , ("M-S-e",      spawn "emacsclient -ca emacs")
         , ("M-S-e",        spawn "emacsclient -ca emacs")
 
         -- TODO: add more keybindings to flameshot
@@ -215,7 +237,8 @@ myKeys =
         -- Other
         , ("M-m", sendMessage ToggleStruts)
         , ("M-<Space>", spawn "/home/artemy/Scripts/layout-switcher.sh")
-
+        , ("M-<Delete>", spawn "dm-tool switch-to-greeter && systemctl suspend")
+        , ("M-<Escape>", spawn "dm-tool switch-to-greeter")
         -- Kill windows
         , ("M-S c", kill1)     -- Kill the currently focused client
         , ("M-S-a", killAll)   -- Kill all windows on current workspace
