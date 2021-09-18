@@ -17,6 +17,7 @@ import XMonad.Actions.WithAll (killAll)
 
 -- DATA
 import Data.Monoid
+import qualified Data.Map.Strict as M
 
 -- LAYOUT
 import XMonad.Layout.SimplestFloat
@@ -28,6 +29,7 @@ import XMonad.Layout.LayoutModifier
 import XMonad.Layout.LimitWindows (limitWindows)
 import XMonad.Layout.MultiToggle (mkToggle, EOT(EOT), (??))
 import XMonad.Layout.MultiToggle.Instances (StdTransformers(NBFULL, NOBORDERS))
+import XMonad.Hooks.RefocusLast
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Renamed
 import XMonad.Layout.WindowNavigation
@@ -41,7 +43,7 @@ import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
 -- HOOKS
 import XMonad.Hooks.ManageDocks(docks, avoidStruts, ToggleStruts(..))
 import XMonad.Hooks.SetWMName
-import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat)
+import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat, doCenterFloat, isDialog)
 import XMonad.Hooks.DynamicLog(xmobarPP
                               , wrap
                               , dynamicLogWithPP
@@ -58,7 +60,6 @@ import XMonad.Hooks.DynamicLog(xmobarPP
                               , ppOutput)
 import Graphics.X11.ExtraTypes.XF86
 
--- VARS
 myModMask :: KeyMask
 myModMask = mod4Mask
 
@@ -68,15 +69,12 @@ myTerminal = "alacritty"
 myFileManager :: String
 myFileManager = "pcmanfm"
 
-myEditor :: String
-myEditor = "emacsclient -c -a 'emacs' "  -- Sets emacs as editor
-
 
 myFont :: String
 myFont = "xft:SauceCodePro Nerd Font Mono:regular:size=9:antialias=true:hinting=true"
 
 myBorderWidth :: Dimension
-myBorderWidth = 2
+myBorderWidth = 0
 
 myNormColor :: String
 myNormColor   = "#282c34"  -- Border color of normal windows
@@ -84,7 +82,10 @@ myNormColor   = "#282c34"  -- Border color of normal windows
 myFocusColor :: String
 myFocusColor  = "#46d9ff"  -- Border color of focused windows
 
+myFocusFollowsMouse :: Bool
+myFocusFollowsMouse = False
 
+-- Change workspaces when I got two 27 inch monitors
 myWorkspaces :: [String]
 myWorkspaces = ["web", "dev", "3", "4", "5", "6"]
 
@@ -94,19 +95,78 @@ windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace
 myStartupHook :: X ()
 myStartupHook = do
   -- spawnOnce "picom &"                   -- compositor (fork of compton)
-  spawnOnce "nitrogen --restore &"      -- set wallpaper
-  spawnOnce "powerkit &"                -- power manager
-  spawnOnce "trayer --edge bottom --align right --widthtype request --padding 5 --SetDockType true --SetPartialStrut false --expand true --monitor 1 --transparent true --alpha 256 --height 20 &"
-  spawnOnce "nm-applet &"
-  spawnOnce "blueman-applet &"
-  spawnOnce "pasystray &"
- -- spawnOnce "/home/artemy/Scripts/autostart.sh"
-  spawnOnce "/home/artemy/Scripts/init-us.sh"
-  -- spawnOnce "/home/artemy/Scripts/remap.sh"
-  spawnOnce "/home/artemy/Scripts/fix-mic-led.sh"
-  spawnOnce "/usr/bin/emacs --daemon &" -- emacs daemon for the emacsclient
+  spawnOnce "$HOME/.xmonad/scripts/autostart.sh"
+  spawnOnce "$HOME/Scripts/init-us.sh"
+  spawnOnce "$HOME/Scripts/fix-mic-led.sh"
   setDefaultCursor xC_left_ptr
   setWMName "LG3D"
+
+
+-- window manipulations
+myManageHook = composeAll . concat $
+    [ [isDialog --> doCenterFloat]
+    , [className =? c --> doCenterFloat | c <- myCFloats]
+    , [title =? t --> doFloat | t <- myTFloats]
+    , [resource =? r --> doFloat | r <- myRFloats]
+    , [resource =? i --> doIgnore | i <- myIgnores]
+    -- , [(className =? x <||> title =? x <||> resource =? x) --> doShiftAndGo "\61612" | x <- my1Shifts]
+    -- , [(className =? x <||> title =? x <||> resource =? x) --> doShiftAndGo "\61899" | x <- my2Shifts]
+    -- , [(className =? x <||> title =? x <||> resource =? x) --> doShiftAndGo "\61947" | x <- my3Shifts]
+    -- , [(className =? x <||> title =? x <||> resource =? x) --> doShiftAndGo "\61635" | x <- my4Shifts]
+    -- , [(className =? x <||> title =? x <||> resource =? x) --> doShiftAndGo "\61502" | x <- my5Shifts]
+    -- , [(className =? x <||> title =? x <||> resource =? x) --> doShiftAndGo "\61501" | x <- my6Shifts]
+    -- , [(className =? x <||> title =? x <||> resource =? x) --> doShiftAndGo "\61705" | x <- my7Shifts]
+    -- , [(className =? x <||> title =? x <||> resource =? x) --> doShiftAndGo "\61564" | x <- my8Shifts]
+    -- , [(className =? x <||> title =? x <||> resource =? x) --> doShiftAndGo "\62150" | x <- my9Shifts]
+    -- , [(className =? x <||> title =? x <||> resource =? x) --> doShiftAndGo "\61872" | x <- my10Shifts]
+    ]
+    where
+    -- doShiftAndGo = doF . liftM2 (.) W.greedyView W.shift
+    myCFloats = ["Zathura", "Arandr", "Galculator"]
+    myTFloats = ["Downloads", "Save As..."]
+    myRFloats = []
+    myIgnores = ["desktop_window"]
+    -- my1Shifts = ["Chromium", "Vivaldi-stable", "Firefox"]
+    -- my2Shifts = []
+    -- my3Shifts = ["Inkscape"]
+    -- my4Shifts = []
+    -- my5Shifts = ["Gimp", "feh"]
+    -- my6Shifts = ["vlc", "mpv"]
+    -- my7Shifts = ["Virtualbox"]
+    -- my8Shifts = ["Thunar"]
+    -- my9Shifts = []
+    -- my10Shifts = ["discord"]
+
+
+myManageHooks :: XMonad.Query (Data.Monoid.Endo WindowSet)
+myManageHooks = composeAll
+     -- 'doFloat' forces a window to float.  Useful for dialog boxes and such.
+     -- using 'doShift ( myWorkspaces !! 7)' sends program to workspace 8!
+     [ className =? "confirm"         --> doFloat
+     , className =? "file_progress"   --> doFloat
+     , className =? "dialog"          --> doFloat
+     , className =? "download"        --> doFloat
+     , className =? "error"           --> doFloat
+     , className =? "Gimp"            --> doFloat
+    -- , className =? "Guake"           --> doFloat
+     , className =? "notification"    --> doFloat
+     , className =? "jetbrains-idea"  --> doFloat
+     , className =? "guake"           --> doFloat
+     , className =? "Guake"           --> doFloat
+     , className =? "guake-toggle"           --> doFloat
+     , className =? "pinentry-gtk-2"  --> doFloat
+     , className =? "splash"          --> doFloat
+     , className =? "toolbar"         --> doFloat
+     , title     =? "Oracle VM VirtualBox Manager"  --> doFloat
+     , className =? "google-chrome-stable"   --> doShift ( myWorkspaces !! 1)
+     , className =? "qutebrowser"     --> doShift ( myWorkspaces !! 1 )
+     , className =? "mpv"             --> doShift ( myWorkspaces !! 7 )
+     , className =? "Gimp"            --> doShift ( myWorkspaces !! 8 )
+     , className =? "VirtualBox Manager" --> doShift  ( myWorkspaces !! 4 )
+     , (className =? "firefox" <&&> resource =? "Dialog") --> doFloat  -- Float Firefox Dialog
+     , isFullscreen -->  doFullFloat
+     ] <+> namedScratchpadManageHook myScratchPads
+
 
 -- if fewer than two windows. So a single window has no gaps.
 mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
@@ -183,35 +243,6 @@ myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm ]
                  t = 0.95 -h
                  l = 0.95 -w
 
-myManageHook :: XMonad.Query (Data.Monoid.Endo WindowSet)
-myManageHook = composeAll
-     -- 'doFloat' forces a window to float.  Useful for dialog boxes and such.
-     -- using 'doShift ( myWorkspaces !! 7)' sends program to workspace 8!
-     [ className =? "confirm"         --> doFloat
-     , className =? "file_progress"   --> doFloat
-     , className =? "dialog"          --> doFloat
-     , className =? "download"        --> doFloat
-     , className =? "error"           --> doFloat
-     , className =? "Gimp"            --> doFloat
-    -- , className =? "Guake"           --> doFloat
-     , className =? "notification"    --> doFloat
-     , className =? "jetbrains-idea"  --> doFloat
-     , className =? "guake"           --> doFloat
-     , className =? "Guake"           --> doFloat
-     , className =? "guake-toggle"           --> doFloat
-     , className =? "pinentry-gtk-2"  --> doFloat
-     , className =? "splash"          --> doFloat
-     , className =? "toolbar"         --> doFloat
-     , title     =? "Oracle VM VirtualBox Manager"  --> doFloat
-     , className =? "google-chrome-stable"   --> doShift ( myWorkspaces !! 1)
-     , className =? "qutebrowser"     --> doShift ( myWorkspaces !! 1 )
-     , className =? "mpv"             --> doShift ( myWorkspaces !! 7 )
-     , className =? "Gimp"            --> doShift ( myWorkspaces !! 8 )
-     , className =? "VirtualBox Manager" --> doShift  ( myWorkspaces !! 4 )
-     , (className =? "firefox" <&&> resource =? "Dialog") --> doFloat  -- Float Firefox Dialog
-     , isFullscreen -->  doFullFloat
-     ] <+> namedScratchpadManageHook myScratchPads
-
 unusedKeys :: [(String)]
 unusedKeys = [ ("M-<Space>") ]
 
@@ -281,7 +312,9 @@ main = do
   , borderWidth        = myBorderWidth
   , normalBorderColor  = myNormColor
   , focusedBorderColor = myFocusColor
-  , logHook = dynamicLogWithPP xmobarPP {
+  , focusFollowsMouse  = myFocusFollowsMouse
+  , handleEventHook    = refocusLastWhen myPred
+  , logHook = refocusLastLogHook <+> dynamicLogWithPP xmobarPP {
                   ppCurrent         = xmobarColor  "#51AFEF" "" . wrap "[" "]"
                 , ppTitle           = xmobarColor "#b3afc2" "" . shorten 30
                 , ppHidden          = xmobarColor "#82AAFF" "" . wrap "*" ""    -- Hidden workspaces
@@ -294,3 +327,5 @@ main = do
          }
     } `removeKeysP` unusedKeys
       `additionalKeysP` myKeys
+        where
+          myPred = refocusingIsActive <||> isFloat
