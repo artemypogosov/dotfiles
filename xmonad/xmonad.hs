@@ -35,7 +35,7 @@ import XMonad.Layout.Simplest
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Spacing
 import XMonad.Layout.SubLayouts
-import XMonad.Layout.ToggleLayouts 
+import XMonad.Layout.ToggleLayouts
 import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
 
 -- HOOKS
@@ -86,7 +86,7 @@ myFocusColor  = "#46d9ff"  -- Border color of focused windows
 
 
 myWorkspaces :: [String]
-myWorkspaces = ["1", "2", "3", "4", "5"]
+myWorkspaces = ["web", "dev", "3", "4", "5", "6"]
 
 windowCount :: X (Maybe String)
 windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
@@ -100,7 +100,9 @@ myStartupHook = do
   spawnOnce "nm-applet &"
   spawnOnce "blueman-applet &"
   spawnOnce "pasystray &"
+ -- spawnOnce "/home/artemy/Scripts/autostart.sh"
   spawnOnce "/home/artemy/Scripts/init-us.sh"
+  -- spawnOnce "/home/artemy/Scripts/remap.sh"
   spawnOnce "/home/artemy/Scripts/fix-mic-led.sh"
   spawnOnce "/usr/bin/emacs --daemon &" -- emacs daemon for the emacsclient
   setDefaultCursor xC_left_ptr
@@ -165,6 +167,9 @@ myLayoutHook = avoidStruts $ toggleLayouts floats
                                  ||| noBorders monocle
                                  ||| floats
                                  ||| noBorders tabs
+                                 ||| threeCol
+                                 ||| threeRow
+
 
 myScratchPads :: [NamedScratchpad]
 myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm ]
@@ -192,6 +197,9 @@ myManageHook = composeAll
     -- , className =? "Guake"           --> doFloat
      , className =? "notification"    --> doFloat
      , className =? "jetbrains-idea"  --> doFloat
+     , className =? "guake"           --> doFloat
+     , className =? "Guake"           --> doFloat
+     , className =? "guake-toggle"           --> doFloat
      , className =? "pinentry-gtk-2"  --> doFloat
      , className =? "splash"          --> doFloat
      , className =? "toolbar"         --> doFloat
@@ -222,8 +230,8 @@ myKeys =
         , ("M-<Return>", spawn (myTerminal))
         , ("M-f",        spawn (myFileManager))
         , ("M-x", spawn ("Scripts/xmenu/xmenu.sh"))
+        , ("M-<Delete>", spawn "xkill")
         -- , ("M-S-e",      spawn "emacsclient -ca emacs")
-        , ("M-S-e",        spawn "emacsclient -ca emacs")
 
         -- TODO: add more keybindings to flameshot
         , ("<Print>",    spawn "flameshot gui")
@@ -237,7 +245,7 @@ myKeys =
         -- Other
         , ("M-m", sendMessage ToggleStruts)
         , ("M-<Space>", spawn "/home/artemy/Scripts/layout-switcher.sh")
-        , ("M-<Delete>", spawn "dm-tool switch-to-greeter && systemctl suspend")
+        , ("M-<End>", spawn "dm-tool switch-to-greeter && systemctl suspend")
         , ("M-<Escape>", spawn "dm-tool switch-to-greeter")
         -- Kill windows
         , ("M-S c", kill1)     -- Kill the currently focused client
