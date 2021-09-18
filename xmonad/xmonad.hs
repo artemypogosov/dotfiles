@@ -165,6 +165,8 @@ myLayoutHook = avoidStruts $ toggleLayouts floats
                                  ||| noBorders monocle
                                  ||| floats
                                  ||| noBorders tabs
+                                 ||| threeCol
+                                 ||| threeRow
 
 myScratchPads :: [NamedScratchpad]
 myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm ]
