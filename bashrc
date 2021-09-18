@@ -223,3 +223,6 @@ fm6000 -r
 
 # Temp fix for layouts
 setxkbmap us
+
+# Doom emacs
+ export PATH="$HOME/.emacs.d/bin:$PATH"
