@@ -29,7 +29,9 @@ import XMonad.Layout.LayoutModifier
 import XMonad.Layout.LimitWindows (limitWindows)
 import XMonad.Layout.MultiToggle (mkToggle, EOT(EOT), (??))
 import XMonad.Layout.MultiToggle.Instances (StdTransformers(NBFULL, NOBORDERS))
-import XMonad.Hooks.RefocusLast
+import XMonad.Hooks.RefocusLast (refocusLastLayoutHook, refocusLastWhen, isFloat)
+import XMonad.Layout.TrackFloating
+import XMonad.Layout.LayoutHints
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Renamed
 import XMonad.Layout.WindowNavigation
@@ -44,20 +46,7 @@ import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
 import XMonad.Hooks.ManageDocks(docks, avoidStruts, ToggleStruts(..))
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat, doCenterFloat, isDialog)
-import XMonad.Hooks.DynamicLog(xmobarPP
-                              , wrap
-                              , dynamicLogWithPP
-                              , xmobarColor
-                              , ppCurrent
-                              , ppVisible
-                              , ppSep
-                              , ppTitle
-                              , ppUrgent
-                              , ppHidden
-                              , ppHiddenNoWindows
-                              , ppExtras
-                              , shorten
-                              , ppOutput)
+import XMonad.Hooks.DynamicLog
 import Graphics.X11.ExtraTypes.XF86
 
 myModMask :: KeyMask
@@ -74,7 +63,7 @@ myFont :: String
 myFont = "xft:SauceCodePro Nerd Font Mono:regular:size=9:antialias=true:hinting=true"
 
 myBorderWidth :: Dimension
-myBorderWidth = 0
+myBorderWidth = 1
 
 myNormColor :: String
 myNormColor   = "#282c34"  -- Border color of normal windows
@@ -83,7 +72,7 @@ myFocusColor :: String
 myFocusColor  = "#46d9ff"  -- Border color of focused windows
 
 myFocusFollowsMouse :: Bool
-myFocusFollowsMouse = False
+myFocusFollowsMouse = True
 
 -- Change workspaces when I got two 27 inch monitors
 myWorkspaces :: [String]
@@ -220,7 +209,7 @@ myTabTheme = def { fontName            = myFont
                  , inactiveTextColor   = "#d0d0d0"
                  }
 
-myLayoutHook = avoidStruts $ toggleLayouts floats
+myLayoutHook = refocusLastLayoutHook . trackFloating $ avoidStruts $ toggleLayouts floats
                $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) myDefaultLayout
              where
                myDefaultLayout =     withBorder myBorderWidth tall
@@ -299,6 +288,10 @@ myKeys =
          , ("<XF86MonBrightnessDown>", spawn "lux -s 5%")
         ]
 
+myEventHook = refocusLastEventHook <+> hintsEventHook
+    where
+        refocusLastEventHook = refocusLastWhen isFloat
+
 main :: IO ()
 main = do
   xmproc <- spawnPipe "xmobar $HOME/.config/xmobar/xmobarrc"
@@ -311,11 +304,11 @@ main = do
   , workspaces         = myWorkspaces
   , borderWidth        = myBorderWidth
   , normalBorderColor  = myNormColor
+  , handleEventHook    = myEventHook
   , focusedBorderColor = myFocusColor
   , focusFollowsMouse  = myFocusFollowsMouse
-  , handleEventHook    = refocusLastWhen myPred
-  , logHook = refocusLastLogHook <+> dynamicLogWithPP xmobarPP {
-                  ppCurrent         = xmobarColor  "#51AFEF" "" . wrap "[" "]"
+  , logHook =  dynamicLogWithPP xmobarPP {
+                  ppCurrent         = xmobarColor "#51AFEF" "" . wrap "[" "]"
                 , ppTitle           = xmobarColor "#b3afc2" "" . shorten 30
                 , ppHidden          = xmobarColor "#82AAFF" "" . wrap "*" ""    -- Hidden workspaces
                 , ppHiddenNoWindows = xmobarColor "#c792ea" ""                  -- Hidden workspaces (no windows)
@@ -323,9 +316,8 @@ main = do
                 , ppUrgent          = xmobarColor "#C45500" "" . wrap "!" "!"   -- Urgent workspace
                 , ppSep             =  "<fc=#888> <fn=1>|</fn> </fc>"           -- Separator character
                 , ppExtras          = [windowCount]
+                , ppOrder               = \(ws:l:t:wc)   -> [ws, l, wc!!0, t]
                 , ppOutput          = hPutStrLn xmproc
          }
     } `removeKeysP` unusedKeys
       `additionalKeysP` myKeys
-        where
-          myPred = refocusingIsActive <||> isFloat
