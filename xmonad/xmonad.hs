@@ -45,6 +45,7 @@ import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
 -- HOOKS
 import XMonad.Hooks.ManageDocks(docks, avoidStruts, ToggleStruts(..))
 import XMonad.Hooks.SetWMName
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat, doCenterFloat, isDialog)
 import XMonad.Hooks.DynamicLog
 import Graphics.X11.ExtraTypes.XF86
@@ -288,7 +289,7 @@ myKeys =
          , ("<XF86MonBrightnessDown>", spawn "lux -s 5%")
         ]
 
-myEventHook = refocusLastEventHook <+> hintsEventHook
+myEventHook = refocusLastEventHook <+> hintsEventHook <+> fullscreenEventHook
     where
         refocusLastEventHook = refocusLastWhen isFloat
 
