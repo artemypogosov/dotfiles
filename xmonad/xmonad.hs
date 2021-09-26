@@ -112,7 +112,7 @@ myManageHook = composeAll . concat $
     ]
     where
     -- doShiftAndGo = doF . liftM2 (.) W.greedyView W.shift
-    myCFloats = ["Zathura", "Arandr", "Galculator"]
+    myCFloats = ["TelegramDesktop", "Zathura", "Arandr", "Galculator"]
     myTFloats = ["Downloads", "Save As..."]
     myRFloats = []
     myIgnores = ["desktop_window"]
