@@ -265,7 +265,7 @@ myKeys =
         -- Other
         , ("M-m", sendMessage ToggleStruts)
         , ("M-<Space>", spawn "/home/artemy/Scripts/layout-switcher.sh")
-        , ("M-<End>", spawn "dsystemctl suspend")
+        , ("M-<End>", spawn "systemctl suspend")
         , ("M-<Escape>", spawn "i3lock -c 000000")
         -- Kill windows
         , ("M-S c", kill1)     -- Kill the currently focused client

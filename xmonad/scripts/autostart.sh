@@ -18,5 +18,5 @@ lxqt-powermanagement &
 trayer --edge bottom --align right --widthtype request --padding 5 --SetDockType true --SetPartialStrut false --expand true --monitor 1 --transparent true --alpha 256 --height 20 &
 nm-applet &
 blueman-applet &
-unclutter --timeout 5 &
+unclutter --timeout 10 &
 /usr/bin/emacs --daemon &
