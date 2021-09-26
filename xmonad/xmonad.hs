@@ -309,11 +309,11 @@ main = do
   , focusedBorderColor = myFocusColor
   , focusFollowsMouse  = myFocusFollowsMouse
   , logHook =  dynamicLogWithPP xmobarPP {
-                  ppCurrent         = xmobarColor "#51AFEF" "" . wrap "[" "]"
+                  ppCurrent         = xmobarColor "#458588" "" . wrap "[" "]"
                 , ppTitle           = xmobarColor "#b3afc2" "" . shorten 30
-                , ppHidden          = xmobarColor "#82AAFF" "" . wrap "*" ""    -- Hidden workspaces
-                , ppHiddenNoWindows = xmobarColor "#c792ea" ""                  -- Hidden workspaces (no windows)
-                , ppVisible         = xmobarColor "#98be65" ""                  -- Visible but not current workspace
+                , ppHidden          = xmobarColor "#83a598" "" . wrap "*" ""    -- Hidden workspaces
+                , ppHiddenNoWindows = xmobarColor "#928374" ""                  -- Hidden workspaces (no windows)
+                , ppVisible         = xmobarColor "#98971a" ""                  -- Visible but not current workspace
                 , ppUrgent          = xmobarColor "#C45500" "" . wrap "!" "!"   -- Urgent workspace
                 , ppSep             =  "<fc=#888> <fn=1>|</fn> </fc>"           -- Separator character
                 , ppExtras          = [windowCount]
