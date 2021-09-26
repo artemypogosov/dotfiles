@@ -265,8 +265,8 @@ myKeys =
         -- Other
         , ("M-m", sendMessage ToggleStruts)
         , ("M-<Space>", spawn "/home/artemy/Scripts/layout-switcher.sh")
-        , ("M-<End>", spawn "dm-tool switch-to-greeter && systemctl suspend")
-        , ("M-<Escape>", spawn "dm-tool switch-to-greeter")
+        , ("M-<End>", spawn "dsystemctl suspend")
+        , ("M-<Escape>", spawn "i3lock -c 000000")
         -- Kill windows
         , ("M-S c", kill1)     -- Kill the currently focused client
         , ("M-S-a", killAll)   -- Kill all windows on current workspace
