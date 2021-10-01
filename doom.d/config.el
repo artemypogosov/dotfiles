@@ -1,5 +1,3 @@
-;;; Package -- summary
-;;; Commentary:
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
@@ -8,8 +6,7 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
-;;; Code:
-(setq user-full-name "Artemy Pogosov"
+(setq user-full-name    "Artemy Pogosov"
       user-mail-address "artemypogosov@gmail.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
@@ -22,28 +19,46 @@
 ;;
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
-;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
-;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 
+(setq doom-font (font-spec :family "Fira Code" :size  14)
+      ;doom-variable-pitch-font (font-spec :family "Ubuntu" :size 20)
+      doom-big-font (font-spec :family "Fira Code" :size 30)
+)
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(load-theme 'doom-gruvbox)
+(setq doom-theme 'doom-gruvbox)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(defvar org-directory)
 (setq org-directory "~/org/")
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(defvar display-line-numbers-type)
 (setq display-line-numbers-type t)
 
 
 ;; PROJECTILE
-(defvar projectile-project-search-path)
 (setq projectile-project-search-path '("~/IdeaProjects"))
+
+
+;; OTHER
+(setq undo-limit 80000000                         ; Raise undo-limit to 80Mb
+      evil-want-fine-undo t                       ; By default while in insert all changes are one big blob. Be more granular
+      auto-save-default t                         ; Nobody likes to loose work, I certainly don't
+      truncate-string-ellipsis "…"                ; Unicode ellispis are nicer than "...", and also save /precious/ space
+      password-cache-expiry nil)                  ; I can trust my computers ... can't I?
+
+(display-time-mode 1)
+
+(unless (string-match-p "^Power N/A" (battery))   ; On laptops...
+  (display-battery-mode 1))                       ; it's nice to know how much power you have
+
+(global-subword-mode 1)
+
+
+
+
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
@@ -61,5 +76,3 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-;;
-;;; config.el ends here
