@@ -9,8 +9,6 @@ else
     case $layout in
         us)
             setxkbmap ru ;;
-        ru)
-            setxkbmap ua ;;
         *)
             setxkbmap us ;;
     esac

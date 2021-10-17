@@ -210,6 +210,7 @@ myKeys =
         , ("M-<Space>",  spawn "/home/artemy/Scripts/layout-switcher.sh")
         , ("M-<End>",    spawn "systemctl suspend")
         , ("M-<Escape>", spawn "i3lock -c 000000")
+        , ("S-<Space>",  spawn "setxkbmap ua")
 
         -- Kill windows
         , ("M-S-c", kill1)
