@@ -23,11 +23,9 @@ Config {
        , commands = [
 
             -- time and date
-
                Run Date "%b %_d - %H:%M " "date" 50
 
             -- keyboard layout
-
             ,  Run Kbd [("us", "US"), ("ru", "RU")]
 
             -- network
@@ -41,7 +39,6 @@ Config {
                                    ] 10
 
             -- cpu usage in percent
-
             , Run Cpu [  "-t"       , "<fn=1></fn>   [<total>%]"
                        , "-L"       , "25"
                        , "-H"       , "75"
@@ -51,7 +48,6 @@ Config {
                       ] 20
 
             -- RAM usage
-
             , Run Memory [  "-t"       , "<fn=1>\xf233</fn>   [<usedratio>%]"
                           , "-L"       , "50"
                           , "-H"       , "90"
@@ -61,13 +57,9 @@ Config {
                          ] 20
 
             -- spotify info
-
-            , Run Mpris2 "spotify" [  "-t"         , "<artist> - <title>"
-                                    , "--nastring" , ""
-                                   ] 10
+            , Run Mpris2 "spotify" ["-t", "<artist> - <title>", "--nastring" , ""] 10
 
             -- volume level
-
             , Run Volume "default" "Master" [ "-t"     , "<volume>% <status>"
                                             , "--"
                                             , "--onc"  , "#b8bb26"
@@ -77,27 +69,28 @@ Config {
             -- runs custom script to check for pacman and aur updates
 
             , Run Com ".local/bin/pacupdate" [] "pacupdate" 36000
-                   , Run Battery [ "-t"                  , "<acstatus><left>% "
-                                 , "--"
-                                 , "-L"                  , "15"
-                                 , "-H"                  , "75"
-                                 , "-h"                  , "#98971a"
-                                 , "-m"                  , "#d79921"
-                                 , "-l"                  , "#cc241d"
-                                 , "-i"                  , "<fc=#a3be8c><fn=1>\xf583</fn></fc>"
-                                 , "-o"                  , ""
-                                 , "-O"                  , "<fc=#cc241d><fn=1>\xf58a </fn></fc>"
-                                 , "--highs"             , "<fc=#98971a><fn=1>\xf581 </fn></fc>"
-                                 , "--mediums"           , "<fc=#d79921><fn=1>\xf57d </fn></fc>"
-                                 , "--lows"              , "<fc=#cc241d><fn=1>\xf582 </fn></fc>"
-                                 , "--on-icon-pattern"   , ""
-                                 , "-A"                  , "15"
-                                 , "-a"                  , "notify-send -u critical 'Battery running out!!'"
-                                 ] 10
-,   Run CoreTemp ["-t", "<fn=2></fn> <core0> : <core1> <fn=1>糖</fn> ",
-                  "-L", "40", "-H", "60",
-                  "-l", "lightblue", "-n", "gray90", "-h", "red"] 50
--- Prints out the left side items such as workspaces, layout, etc.
+            , Run Battery [ "-t"                  , "<left>% <acstatus> "
+                          , "--"
+                          , "-L"                  , "18" -- this is 20% of 90W battery
+                          , "-H"                  , "68" -- about 75% of 90W battery
+                          , "-h"                  , "#98971a"
+                          , "-m"                  , "#d79921"
+                          , "-l"                  , "#cc241d"
+                          , "-i"                  , "<fc=#a3be8c><fn=1>\xf583</fn></fc>"
+                          , "-o"                  , ""
+                          , "-O"                  , "<fc=#98971a><fn=2></fn></fc>"
+                          , "--highs"             , "<fc=#98971a><fn=2> </fn></fc>"
+                          , "--mediums"           , "<fc=#d79921><fn=2> </fn></fc>"
+                          , "--lows"              , "<fc=#cc241d><fn=2> </fn></fc>"
+                          , "--on-icon-pattern"   , ""
+                          , "-A"                  , "15"
+                          , "-a"                  , "notify-send -u critical 'Battery running out!'"
+                          ] 10
+             ,   Run CoreTemp ["-t", "<fn=2></fn> <core0> : <core1> <fn=1>糖</fn> ",
+                               "-L", "40", "-H", "60",
+                               "-l", "lightblue", "-n", "gray90", "-h", "red"] 50
+
+             -- Prints out the left side items such as workspaces, layout, etc.
             , Run UnsafeStdinReader
             ]
        , sepChar  = "%"
