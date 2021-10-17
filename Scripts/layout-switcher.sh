@@ -10,6 +10,8 @@ else
         us)
             setxkbmap ru ;;
         ru)
+            setxkbmap ua ;;
+        *)
             setxkbmap us ;;
     esac
 fi

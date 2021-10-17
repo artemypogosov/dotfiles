@@ -1,5 +1,10 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
+
+(require 'battery)
+(require 'lsp)
+(require 'lsp-haskell)
+
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
@@ -43,19 +48,24 @@
 
 
 ;; OTHER
-(setq undo-limit 80000000                         ; Raise undo-limit to 80Mb
-      evil-want-fine-undo t                       ; By default while in insert all changes are one big blob. Be more granular
-      auto-save-default t                         ; Nobody likes to loose work, I certainly don't
-      truncate-string-ellipsis "…"                ; Unicode ellispis are nicer than "...", and also save /precious/ space
-      password-cache-expiry nil)                  ; I can trust my computers ... can't I?
+(setq undo-limit 80000000               ; Raise undo-limit to 80Mb
+      evil-want-fine-undo t             ; By default while in insert all changes are one big blob. Be more granular
+      auto-save-default t               ; Nobody likes to loose work, I certainly don't
+      truncate-string-ellipsis "…"      ; Unicode ellispis are nicer than "...", and also save /precious/ space
+      password-cache-expiry nil)        ; I can trust my computers ... can't I?
 
 (display-time-mode 1)
 
-(unless (string-match-p "^Power N/A" (battery))   ; On laptops...
-  (display-battery-mode 1))                       ; it's nice to know how much power you have
+; On laptops it's nice to know how much power you have
+(when (and (funcall battery-status-function)
+           (not (string-match-p "N/A" (battery-format "%B"(funcall battery-status-function)))))
+  (display-battery-mode 1))
 
-(global-subword-mode 1)
+;; (global-subword-mode 1)
 
+;; Hooks so haskell and literate haskell major modes trigger LSP setup
+(add-hook 'haskell-mode-hook #'lsp)
+(add-hook 'haskell-literate-mode-hook #'lsp)
 
 
 

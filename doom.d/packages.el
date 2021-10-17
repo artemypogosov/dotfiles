@@ -52,3 +52,6 @@
 
 (package! org-roam)
 (package! windresize)
+
+(package! lsp-haskell)
+(package! haskell-mode)
