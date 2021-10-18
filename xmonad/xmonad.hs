@@ -210,7 +210,7 @@ myKeys =
         , ("M-<Space>",  spawn "/home/artemy/Scripts/layout-switcher.sh")
         , ("M-<End>",    spawn "systemctl suspend")
         , ("M-<Escape>", spawn "i3lock -c 000000")
-        , ("S-<Space>",  spawn "setxkbmap ua")
+        , ("S-M1-u",  spawn "setxkbmap ua")
 
         -- Kill windows
         , ("M-S-c", kill1)
@@ -241,7 +241,7 @@ myEventHook = refocusLastEventHook <+> hintsEventHook <+> fullscreenEventHook
 
 main :: IO ()
 main = do
-  xmproc <- spawnPipe "xmobar $HOME/.config/xmobar/xmobarrc-laptop"
+  xmproc <- spawnPipe "xmobar $HOME/.config/xmobar/xmobarrc"
   xmonad $ docks def  {
   terminal             = myTerminal
   , modMask            = myModMask
