@@ -141,7 +141,6 @@ myTabTheme = def { fontName            = myFont
                  }
 
 myTall = renamed [Replace "tall"]
-  $ smartBorders
   $ windowNavigation
   $ subLayout [] (smartBorders Simplest)
   $ limitWindows 12
@@ -149,35 +148,30 @@ myTall = renamed [Replace "tall"]
   $ ResizableTall 1 (3/100) (1/2) []
 
 mySpiral = renamed [Replace "spiral"]
-  $ smartBorders
   $ mySpacing 5
   $ limitWindows 12
   $ spiral (125 % 146)
 
 myGrid = renamed [Replace "grid"]
-  $ smartBorders
   $ mySpacing 5
   $ limitWindows 12
   $ Grid
 
 myFloat = renamed [Replace "float"]
-  $ smartBorders
   $ mySpacing 5
   $ limitWindows 12
   $ simplestFloat
 
 myMirror = renamed [Replace "mirror tall"]
-  $ smartBorders
-  $ mySpacing 5
   $ limitWindows 12
   $ Mirror myTall
 
 myTabs = renamed [Replace "tabs"]
-  $ tabbed shrinkText myTabTheme
+  $ noBorders $ tabbed shrinkText myTabTheme
 
 myFull = Full
 
-myLayoutHook = withBorder myBorderWidth myLayouts
+myLayoutHook = avoidStruts $ toggleLayouts myFloat $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ lessBorders Screen myLayouts
   where
     myLayouts = myTall ||| mySpiral ||| myGrid ||| myMirror ||| myFull ||| myFloat ||| myTabs
 
@@ -247,7 +241,7 @@ main = do
   , modMask            = myModMask
   , startupHook        = myStartupHook
   , manageHook         = myManageHook
-  , layoutHook         = avoidStruts $ toggleLayouts myFloat $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ smartBorders myLayoutHook
+  , layoutHook         = myLayoutHook
   , workspaces         = myWorkspaces
   , borderWidth        = myBorderWidth
   , normalBorderColor  = myNormColor
