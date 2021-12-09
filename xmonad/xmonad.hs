@@ -30,7 +30,6 @@ import XMonad.Layout.LayoutModifier
 import XMonad.Layout.LimitWindows (limitWindows)
 import XMonad.Layout.MultiToggle (mkToggle, EOT(EOT), (??))
 import XMonad.Layout.MultiToggle.Instances (StdTransformers(NBFULL, NOBORDERS))
-import XMonad.Hooks.RefocusLast (refocusLastLayoutHook, refocusLastWhen, isFloat)
 import XMonad.Layout.LayoutHints
 import XMonad.Layout.Gaps
 import XMonad.Layout.NoBorders
@@ -45,6 +44,11 @@ import XMonad.Layout.Spiral (spiral)
 import XMonad.Layout.SubLayouts
 import XMonad.Layout.ToggleLayouts
 import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
+
+-- FIX FLOAT BEHAVIOR
+import XMonad.Hooks.RefocusLast (refocusLastLayoutHook, refocusLastWhen, isFloat)
+import XMonad.Layout.TrackFloating
+-- import XMonad.Layout.StateFull
 
 -- HOOKS
 import XMonad.Hooks.ManageDocks(docks, avoidStruts, ToggleStruts(..))
@@ -70,7 +74,7 @@ myFont :: String
 myFont = "xft:SauceCodePro Nerd Font Mono:regular:size=9:antialias=true:hinting=true"
 
 myBorderWidth :: Dimension
-myBorderWidth = 1
+myBorderWidth = 0
 
 myNormColor :: String
 myNormColor   = "#282c34"  -- Border color of normal windows
@@ -79,7 +83,9 @@ myFocusColor :: String
 myFocusColor  = "#46d9ff"  -- Border color of focused windows
 
 myFocusFollowsMouse :: Bool
-myFocusFollowsMouse = True
+myFocusFollowsMouse = False
+myClickJustFocuses :: Bool
+myClickJustFocuses = False
 
 -- Change workspaces when I got two 27 inch monitors
 myWorkspaces :: [String]
@@ -167,11 +173,12 @@ myMirror = renamed [Replace "mirror tall"]
   $ Mirror myTall
 
 myTabs = renamed [Replace "tabs"]
-  $ noBorders $ tabbed shrinkText myTabTheme
+  $ noBorders
+  $ tabbed shrinkText myTabTheme
 
 myFull = Full
 
-myLayoutHook = avoidStruts $ toggleLayouts myFloat $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ lessBorders Screen myLayouts
+myLayoutHook = refocusLastLayoutHook . trackFloating $ avoidStruts $ toggleLayouts myFloat $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ lessBorders Screen myLayouts
   where
     myLayouts = myTall ||| mySpiral ||| myGrid ||| myMirror ||| myFull ||| myFloat ||| myTabs
 
@@ -190,7 +197,7 @@ myKeys =
         , ("M-f",        spawn myFileManager)
         -- , ("M-x", spawn "Scripts/xmenu/xmenu.sh")
         , ("M-<Delete>", spawn "xkill")
-        , ("M-e",        spawn "emacsclient -ca emacs")
+        -- , ("M-M1-e",        spawn "emacsclient -ca emacs")
 
         -- Flameshot
         , ("C-S-<Print>", spawn "flameshot gui     -p ~/Pictures/Screenshots/SS")
@@ -247,6 +254,7 @@ main = do
   , normalBorderColor  = myNormColor
   , handleEventHook    = myEventHook
   , focusedBorderColor = myFocusColor
+  , clickJustFocuses = myClickJustFocuses
   , focusFollowsMouse  = myFocusFollowsMouse
   , logHook =  dynamicLogWithPP xmobarPP {
                   ppCurrent         = xmobarColor "#458588" "" . wrap "[" "]"
