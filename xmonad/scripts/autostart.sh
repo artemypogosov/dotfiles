@@ -21,4 +21,4 @@ trayer --edge bottom --align right --widthtype request --padding 5 --SetDockType
 nm-applet &
 blueman-applet &
 unclutter --timeout 10 &
-/usr/bin/emacs --daemon &
+emacs --daemon &

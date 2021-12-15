@@ -74,7 +74,10 @@ myFont :: String
 myFont = "xft:SauceCodePro Nerd Font Mono:regular:size=9:antialias=true:hinting=true"
 
 myBorderWidth :: Dimension
-myBorderWidth = 0
+myBorderWidth = 1
+
+myEmacs :: String
+myEmacs = "emacsclient -c -a 'emacs' "
 
 myNormColor :: String
 myNormColor   = "#282c34"  -- Border color of normal windows
@@ -197,7 +200,8 @@ myKeys =
         , ("M-f",        spawn myFileManager)
         -- , ("M-x", spawn "Scripts/xmenu/xmenu.sh")
         , ("M-<Delete>", spawn "xkill")
-        -- , ("M-M1-e",        spawn "emacsclient -ca emacs")
+
+        , ("M-e e", spawn myEmacs)
 
         -- Flameshot
         , ("C-S-<Print>", spawn "flameshot gui     -p ~/Pictures/Screenshots/SS")

@@ -1,14 +1,14 @@
 Config {
         --- appearance
 
-        font = "xft:Ubuntu:weight=bold:pixelsize=12:antialias=true:hinting=true"
+        font = "xft:Ubuntu:weight=bold:pixelsize=14:antialias=true:hinting=true"
         , additionalFonts = [ "xft:Mononoki Nerd Font:pixelsize=11:antialias=true:hinting=true"
                             , "xft:Font Awesome 5 Free Solid:pixelsize=12"
                             , "xft:Font Awesome 5 Brands:pixelsize=12"]
        , bgColor = "#282828"
        , fgColor = "#928374"
        , alpha = 200
-       , position = TopSize C 100 22
+       , position = TopSize C 100 25
 
        --- general
 
