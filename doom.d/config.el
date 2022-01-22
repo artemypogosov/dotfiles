@@ -15,20 +15,30 @@
       user-mail-address "artemypogosov@gmail.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
-;; are the three important ones:
-;;
-;; + `doom-font'
-;; + `doom-variable-pitch-font'
-;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
-;;   presentations or streaming.
+;; are the three important ones: doom-font, doom-variable-pitch-font, doom-big-font
 ;;
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
 
-(setq doom-font (font-spec :family "Fira Code" :size  14)
-      ;doom-variable-pitch-font (font-spec :family "Ubuntu" :size 20)
-      doom-big-font (font-spec :family "Fira Code" :size 30)
-)
+;; >>> FONTS
+;; ‘doom-font’ – standard monospace font that is used for most things in Emacs.
+;; ‘doom-variable-pitch-font’ – variable font which is useful in some Emacs plugins.
+;; ‘doom-big-font’ – used in doom-big-font-mode; useful for presentations.
+;; ‘font-lock-comment-face’ – for comments.
+;; ‘font-lock-keyword-face’ – for keywords with special significance like ‘setq’ in elisp.
+
+(setq doom-font (font-spec :family "Source Code Pro" :size  15)
+      doom-variable-pitch-font (font-spec :family "UbuntuMono Nerd Font" :size 15)
+      doom-big-font (font-spec :family "Source Code Pro" :size 20))
+
+(after! doom-themes
+  (setq doom-themes-enable-bold t
+        doom-themes-enable-italic t))
+
+(custom-set-faces!
+ '(font-lock-comment-face :slant italic)
+ '(font-lock-keyword-face :slant italic))
+
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
@@ -37,6 +47,7 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
+(setq org-hide-emphasis-markers t)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -57,9 +68,9 @@
 (display-time-mode 1)
 
 ; On laptops it's nice to know how much power you have
-(when (and (funcall battery-status-function)
-           (not (string-match-p "N/A" (battery-format "%B"(funcall battery-status-function)))))
-  (display-battery-mode 1))
+;(when (and (funcall battery-status-function)
+;           (not (string-match-p "N/A" (battery-format "%B"(funcall battery-status-function)))))
+;  (display-battery-mode 1))
 
 ;; (global-subword-mode 1)
 
