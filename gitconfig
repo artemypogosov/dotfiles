@@ -1,0 +1,8 @@
+[alias]
+	st = status
+	go = checkout
+	br = branch
+	com = commit
+[user]
+	email = artemypogosov@gmail.com
+	name = Artemy Pogosov
