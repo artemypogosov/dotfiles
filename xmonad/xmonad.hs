@@ -48,7 +48,6 @@ import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
 -- FIX FLOAT BEHAVIOR
 import XMonad.Hooks.RefocusLast (refocusLastLayoutHook, refocusLastWhen, isFloat)
 import XMonad.Layout.TrackFloating
--- import XMonad.Layout.StateFull
 
 -- HOOKS
 import XMonad.Hooks.ManageDocks(docks, avoidStruts, ToggleStruts(..))
@@ -61,6 +60,7 @@ import Graphics.X11.ExtraTypes.XF86
 -- OTHER
 import Control.Monad (liftM2)
 
+-- VARS
 myModMask :: KeyMask
 myModMask = mod4Mask
 
@@ -71,7 +71,7 @@ myFileManager :: String
 myFileManager = "pcmanfm"
 
 myFont :: String
-myFont = "xft:SauceCodePro Nerd Font Mono:regular:size=9:antialias=true:hinting=true"
+myFont = "xft:Ubuntu:regular:size=9:antialias=true:hinting=true"
 
 myBorderWidth :: Dimension
 myBorderWidth = 1
@@ -79,9 +79,11 @@ myBorderWidth = 1
 myEmacs :: String
 myEmacs = "emacsclient -c -a 'emacs' "
 
+-- border color of normal windows
 myNormColor :: String
 myNormColor   = "#282c34"  -- Border color of normal windows
 
+-- border color of focused windows
 myFocusColor :: String
 myFocusColor  = "#46d9ff"  -- Border color of focused windows
 
@@ -92,14 +94,14 @@ myClickJustFocuses = False
 
 -- Change workspaces when I got two 27 inch monitors
 myWorkspaces :: [String]
-myWorkspaces = ["web", "dev", "3", "4", "5"]
+myWorkspaces = ["web", "dev", "chat", "music", "other"]
 
 windowCount :: X (Maybe String)
 windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
 
 myStartupHook :: X ()
 myStartupHook = do
-  -- spawnOnce "picom &" -- compositor (fork of compton)
+  spawnOnce "picom &" -- compositor (fork of compton)
   spawnOnce "$HOME/.xmonad/scripts/autostart.sh"
   spawnOnce "$HOME/Scripts/init-us.sh"
   spawnOnce "$HOME/Scripts/fix-mic-led.sh"
@@ -201,7 +203,7 @@ myKeys =
         -- , ("M-x", spawn "Scripts/xmenu/xmenu.sh")
         , ("M-<Delete>", spawn "xkill")
 
-        , ("M-e e", spawn myEmacs)
+        -- , ("M-e e", spawn myEmacs)
 
         -- Flameshot
         , ("C-S-<Print>", spawn "flameshot gui     -p ~/Pictures/Screenshots/SS")
@@ -261,15 +263,15 @@ main = do
   , clickJustFocuses = myClickJustFocuses
   , focusFollowsMouse  = myFocusFollowsMouse
   , logHook =  dynamicLogWithPP xmobarPP {
-                  ppCurrent         = xmobarColor "#458588" "" . wrap "[" "]"
-                , ppTitle           = xmobarColor "#b3afc2" "" . shorten 30
-                , ppHidden          = xmobarColor "#83a598" "" . wrap "*" ""    -- Hidden workspaces
-                , ppHiddenNoWindows = xmobarColor "#928374" ""                  -- Hidden workspaces (no windows)
-                , ppVisible         = xmobarColor "#98971a" ""                  -- Visible but not current workspace
-                , ppUrgent          = xmobarColor "#C45500" "" . wrap "!" "!"   -- Urgent workspace
-                , ppSep             =  "<fc=#888> <fn=1>|</fn> </fc>"           -- Separator character
-                , ppExtras          = [windowCount]
-                , ppOrder           = \(ws:l:t:wc) -> [ws, l, head wc, t]
-                , ppOutput          = hPutStrLn xmproc
-         }
-    } `additionalKeysP` myKeys
+      ppCurrent         = xmobarColor "#458588" "" . wrap "[" "]"
+      , ppTitle           = xmobarColor "#b3afc2" "" . shorten 30
+      , ppHidden          = xmobarColor "#83a598" "" . wrap "*" ""    -- Hidden workspaces
+      , ppHiddenNoWindows = xmobarColor "#928374" ""                  -- Hidden workspaces (no windows)
+      , ppVisible         = xmobarColor "#98971a" ""                  -- Visible but not current workspace
+      , ppUrgent          = xmobarColor "#C45500" "" . wrap "!" "!"   -- Urgent workspace
+      , ppSep             =  "<fc=#888> <fn=1>|</fn> </fc>"           -- Separator character
+      , ppExtras          = [windowCount]
+      , ppOrder           = \(ws:l:t:wc) -> [ws, l, head wc, t]
+      , ppOutput          = hPutStrLn xmproc
+      }
+} `additionalKeysP` myKeys

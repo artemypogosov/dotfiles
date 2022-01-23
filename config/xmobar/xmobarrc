@@ -1,7 +1,7 @@
 Config {
         --- appearance
 
-        font = "xft:Ubuntu:weight=bold:pixelsize=14:antialias=true:hinting=true"
+        font = "xft:Ubuntu:weight=bold:pixelsize=15:antialias=true:hinting=true"
         , additionalFonts = [ "xft:Mononoki Nerd Font:pixelsize=11:antialias=true:hinting=true"
                             , "xft:Font Awesome 5 Free Solid:pixelsize=12"
                             , "xft:Font Awesome 5 Brands:pixelsize=12"]
