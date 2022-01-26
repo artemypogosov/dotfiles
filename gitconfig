@@ -3,6 +3,7 @@
 	go = checkout
 	br = branch
 	com = commit
+	last = "log -1"
 [user]
 	email = artemypogosov@gmail.com
 	name = Artemy Pogosov
