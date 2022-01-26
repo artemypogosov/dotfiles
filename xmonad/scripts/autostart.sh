@@ -15,6 +15,8 @@ xsetroot -cursor_name left_ptr &
 nitrogen --restore &
 #powerkit &
 dunst &
+dropbox $
+guake $
 udiskie &
 lxqt-powermanagement &
 trayer --edge bottom --align right --widthtype request --padding 5 --SetDockType true --SetPartialStrut false --expand true --monitor 1 --transparent true --alpha 256 --height 20 &
