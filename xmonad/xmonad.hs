@@ -101,7 +101,6 @@ windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace
 
 myStartupHook :: X ()
 myStartupHook = do
-  spawnOnce "picom &" -- compositor (fork of compton)
   spawnOnce "$HOME/.xmonad/scripts/autostart.sh"
   spawnOnce "$HOME/Scripts/init-us.sh"
   spawnOnce "$HOME/Scripts/fix-mic-led.sh"
@@ -131,7 +130,7 @@ myManageHook = composeAll . concat $
     myRFloats = []
     myIgnores = ["desktop_window"]
     my1Shifts = ["Google-chrome", "Firefox"]
-    my2Shifts = ["Emacs"]
+    my2Shifts = ["Emacs", "idea"]
     -- my3Shifts = ["Inkscape"]
     -- my4Shifts = []
     -- my5Shifts = ["Gimp", "feh"]
@@ -185,7 +184,7 @@ myFull = Full
 
 myLayoutHook = refocusLastLayoutHook . trackFloating $ avoidStruts $ toggleLayouts myFloat $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ lessBorders Screen myLayouts
   where
-    myLayouts = myTall ||| mySpiral ||| myGrid ||| myMirror ||| myFull ||| myFloat ||| myTabs
+    myLayouts = myTall ||| myMirror ||| mySpiral ||| myGrid ||| myFull ||| myFloat ||| myTabs
 
 myKeys :: [(String, X ())]
 myKeys =
@@ -203,12 +202,12 @@ myKeys =
         -- , ("M-x", spawn "Scripts/xmenu/xmenu.sh")
         , ("M-<Delete>", spawn "xkill")
 
-        -- , ("M-e e", spawn myEmacs)
+        , ("M-d e", spawn myEmacs)
 
         -- Flameshot
-        , ("C-S-<Print>", spawn "flameshot gui     -p ~/Pictures/Screenshots/SS")
-        , ("S-<Print>",   spawn "flameshot full -c -p ~/Pictures/Screenshots/SS")
-        , ("<Print>",     spawn "flameshot full    -p ~/Pictures/Screenshots/SS")
+        , ("C-S-<Print>", spawn "flameshot gui")
+        , ("S-<Print>",   spawn "flameshot full -c -p ~/Pictures/Screenshots/SS") -- save and add to clipboard
+        , ("<Print>",     spawn "flameshot full    -p ~/Pictures/Screenshots/SS") -- just save
         -- , ("M-s", namedScratchpadAction myScratchPads "terminal")
 
         -- Other
@@ -221,7 +220,7 @@ myKeys =
 
         -- Kill windows
         , ("M-S-c", kill1)
-        , ("M-S-a", killAll)
+        , ("M-S-a c", killAll)
 
         -- Layout
         , ("M-<Tab>", sendMessage NextLayout)

@@ -12,15 +12,19 @@ function run {
 xsetroot -cursor_name left_ptr &
 
 # Starting applications at boot time
-nitrogen --restore &
-#powerkit &
-dunst &
-dropbox $
-guake $
-udiskie &
-lxqt-powermanagement &
 trayer --edge bottom --align right --widthtype request --padding 5 --SetDockType true --SetPartialStrut false --expand true --monitor 1 --transparent true --alpha 256 --height 20 &
-nm-applet &
-blueman-applet &
-unclutter --timeout 10 &
+picom &
+udiskie &
 emacs --daemon &
+nitrogen --restore &
+unclutter --timeout 10 &
+
+sleep 5s
+
+guake $
+nm-applet &
+dropbox $
+blueman-applet &
+dunst &
+#powerkit &
+#lxqt-powermanagement &
