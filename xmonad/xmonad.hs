@@ -101,7 +101,9 @@ windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace
 
 myStartupHook :: X ()
 myStartupHook = do
+  spawn "killall trayer"
   spawnOnce "$HOME/.xmonad/scripts/autostart.sh"
+  spawn "sleep 2 && trayer --edge bottom --align right --widthtype request --padding 5 --SetDockType true --SetPartialStrut false --expand true --monitor 1 --transparent true --alpha 256 --height 20"
   spawnOnce "$HOME/Scripts/init-us.sh"
   spawnOnce "$HOME/Scripts/fix-mic-led.sh"
   setDefaultCursor xC_left_ptr
@@ -154,7 +156,7 @@ myTall = renamed [Replace "tall"]
   $ windowNavigation
   $ subLayout [] (smartBorders Simplest)
   $ limitWindows 12
-  $ mySpacing 5
+  $ mySpacing 3
   $ ResizableTall 1 (3/100) (1/2) []
 
 mySpiral = renamed [Replace "spiral"]
@@ -216,7 +218,8 @@ myKeys =
         , ("M-<Space>",  spawn "/home/artemy/Scripts/layout-switcher.sh")
         , ("M-<End>",    spawn "systemctl suspend")
         , ("M-<Escape>", spawn "i3lock -c 000000")
-        , ("S-M1-u",  spawn "setxkbmap ua")
+       -- , ("S-M1-u",  spawn "setxkbmap ua")
+        , ("M-<F1>",  spawn "setxkbmap ua")
 
         -- Kill windows
         , ("M-S-c", kill1)
@@ -247,7 +250,7 @@ myEventHook = refocusLastEventHook <+> hintsEventHook <+> fullscreenEventHook
 
 main :: IO ()
 main = do
-  xmproc <- spawnPipe "xmobar $HOME/.config/xmobar/xmobarrc"
+  xmproc <- spawnPipe "xmobar $HOME/.config/xmobar/xmobarrc-laptop"
   xmonad $ docks def  {
   terminal             = myTerminal
   , modMask            = myModMask
