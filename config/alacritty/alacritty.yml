@@ -1,3 +1,10 @@
+scrolling:
+  # Maximum number of lines in the scrollback buffer.
+  # Specifying '0' will disable scrolling.
+  history: 5000
+font:
+  size: 8
+
 # Colors (Gruvbox dark)
 colors:
   # Default colors
