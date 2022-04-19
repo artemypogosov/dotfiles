@@ -1,6 +1,7 @@
 alacritty
 arandr
 blueman
+brightnessctl
 calcurse
 cmatrix
 dmenu
