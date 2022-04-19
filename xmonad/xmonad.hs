@@ -81,11 +81,11 @@ myEmacs = "emacsclient -c -a 'emacs' "
 
 -- border color of normal windows
 myNormColor :: String
-myNormColor   = "#282c34"  -- Border color of normal windows
+myNormColor   = "#000000"  -- Border color of normal windows
 
 -- border color of focused windows
 myFocusColor :: String
-myFocusColor  = "#46d9ff"  -- Border color of focused windows
+myFocusColor  = "#cc241d"  -- Border color of focused windows
 
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = False
@@ -154,9 +154,9 @@ myTabTheme = def { fontName            = myFont
 
 myTall = renamed [Replace "tall"]
   $ windowNavigation
-  $ subLayout [] (smartBorders Simplest)
+ -- $ subLayout [] (smartBorders Simplest)
   $ limitWindows 12
-  $ mySpacing 3
+  $ mySpacing 5
   $ ResizableTall 1 (3/100) (1/2) []
 
 mySpiral = renamed [Replace "spiral"]
