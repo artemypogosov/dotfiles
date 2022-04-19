@@ -239,8 +239,8 @@ myKeys =
         , ("<XF86AudioPrev>", spawn "playerctl previous")
         , ("<XF86AudioNext>", spawn "playerctl next")
 
-        , ("<XF86MonBrightnessUp>",   spawn "lux -a 5%")
-        , ("<XF86MonBrightnessDown>", spawn "lux -s 5%")
+        , ("<XF86MonBrightnessUp>",   spawn "brightnessctl set +5%")
+        , ("<XF86MonBrightnessDown>", spawn "brightnessctl set 5%-")
         ]
 
 
