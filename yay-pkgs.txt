@@ -1,0 +1,13 @@
+checkupdates+aur
+gruvbox-dark-gtk
+gruvbox-dark-icons-gtk
+gruvbox-icon-theme
+gruvbox-material-gtk-theme-git
+gruvbox-material-icon-theme-git
+lux
+mattermost-desktop
+nerd-fonts-mononoki
+nerd-fonts-ubuntu-mono
+otf-font-awesome-5
+powerkit
+spotify
