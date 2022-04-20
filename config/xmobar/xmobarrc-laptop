@@ -8,7 +8,7 @@ Config {
        , bgColor = "#282828"
        , fgColor = "#928374"
        , alpha = 200
-       , position = TopSize C 100 22
+       , position = TopSize C 100 20
 
        --- general
 
@@ -26,7 +26,7 @@ Config {
                Run Date "%b %_d - %H:%M " "date" 50
 
             -- keyboard layout
-            ,  Run Kbd [("us", "US"), ("ru", "RU")]
+            ,  Run Kbd [("us", "US"), ("ru", "RU"), ("ua", "UA")]
 
             -- network
             , Run Network "enp5s0" [  "-t"       , "<fn=1>\xf0ab</fn>  <rx>  <fn=1>\xf0aa</fn>  <tx>"
@@ -57,7 +57,11 @@ Config {
                          ] 20
 
             -- spotify info
-            , Run Mpris2 "spotify" ["-t", "<artist> - <title>", "--nastring" , ""] 10
+            , Run Mpris2 "spotify" [ "-t", "<artist> - <title>"
+                                   , "--nastring" , ""
+                                   , "-T"         , "35"
+                                   , "-E"         , "..."
+                                ] 10
 
             -- volume level
             , Run Volume "default" "Master" [ "-t"     , "<volume>% <status>"
@@ -65,7 +69,7 @@ Config {
                                             , "--onc"  , "#b8bb26"
                                             , "--offc" , "#cc241d"
                                             ] 5
-
+            -- , Run Wireless "" [ "-t", "<essid>" ] 10
             -- runs custom script to check for pacman and aur updates
 
             , Run Com ".local/bin/pacupdate" [] "pacupdate" 36000
@@ -85,15 +89,15 @@ Config {
                           , "--on-icon-pattern"   , ""
                           , "-A"                  , "15"
                           , "-a"                  , "notify-send -u critical 'Battery running out!'"
-                          ] 10
+                          ] 100
              ,   Run CoreTemp ["-t", "<fn=2></fn> <core0> : <core1> <fn=1>糖</fn> ",
                                "-L", "40", "-H", "60",
-                               "-l", "lightblue", "-n", "gray90", "-h", "red"] 50
+                               "-l", "lightblue", "-n", "gray", "-h", "red"] 50
 
              -- Prints out the left side items such as workspaces, layout, etc.
             , Run UnsafeStdinReader
             ]
        , sepChar  = "%"
        , alignSep = "}{"
-       , template = " %UnsafeStdinReader% }<action=`alacritty -e calcurse`>%date%</action>{%mpris2%   %coretemp%   %default:Master%   %memory%   <action=`alacritty -e htop`>%cpu%</action>   <fn=2></fn> <action=`alacritty -e sudo pacman -Syu`>%pacupdate%</action>   %kbd%   %battery%"
+       , template = " %UnsafeStdinReader% }<action=`alacritty -e calcurse`>%date%</action>{%mpris2%   %default:Master%  |  %coretemp%   <action=`alacritty -e htop`>%cpu%</action>   %memory%  |  <fn=2></fn> <action=`alacritty -e sudo pacman -Syu`>%pacupdate%</action> :  %kbd% :  %battery%"
        }
