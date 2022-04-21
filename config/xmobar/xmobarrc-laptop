@@ -100,5 +100,5 @@ Config {
             ]
        , sepChar  = "%"
        , alignSep = "}{"
-       , template = " %UnsafeStdinReader% }<action=`alacritty -e calcurse`>%date%</action>{%mpris2%   %default:Master% |  %brightness% <fn=1></fn>    |  %coretemp%   <action=`alacritty -e htop`>%cpu%</action>   %memory%  |  <fn=2></fn> <action=`alacritty -e sudo pacman -Syu`>%pacupdate%</action> :  %kbd%  :  %battery%"
+       , template = " %UnsafeStdinReader% }<action=`alacritty -e calcurse`>%date%</action>{%mpris2%   %default:Master% |  %brightness% <fn=1></fn>    |  %coretemp%   <action=`alacritty -e htop`>%cpu%</action>   %memory%  |  <fn=2></fn> <action=`alacritty -e sudo pacman -Syu`>%pacupdate%</action>  :  %kbd%  :  %battery%"
        }
