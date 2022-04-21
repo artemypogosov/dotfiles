@@ -90,6 +90,7 @@ Config {
                           , "-A"                  , "15"
                           , "-a"                  , "notify-send -u critical 'Battery running out!'"
                           ] 100
+             ,   Run Com ".local/bin/brightness" [] "brightness" 10
              ,   Run CoreTemp ["-t", "<fn=2></fn> <core0> : <core1> <fn=1>糖</fn> ",
                                "-L", "40", "-H", "60",
                                "-l", "lightblue", "-n", "gray", "-h", "red"] 50
@@ -99,5 +100,5 @@ Config {
             ]
        , sepChar  = "%"
        , alignSep = "}{"
-       , template = " %UnsafeStdinReader% }<action=`alacritty -e calcurse`>%date%</action>{%mpris2%   %default:Master%  |  %coretemp%   <action=`alacritty -e htop`>%cpu%</action>   %memory%  |  <fn=2></fn> <action=`alacritty -e sudo pacman -Syu`>%pacupdate%</action> :  %kbd% :  %battery%"
+       , template = " %UnsafeStdinReader% }<action=`alacritty -e calcurse`>%date%</action>{%mpris2%   %default:Master% | %brightness% <fn=1></fn>   | %coretemp%   <action=`alacritty -e htop`>%cpu%</action>   %memory%  |  <fn=2></fn> <action=`alacritty -e sudo pacman -Syu`>%pacupdate%</action> :  %kbd% :  %battery%"
        }
