@@ -127,11 +127,11 @@ myManageHook = composeAll . concat $
     doShiftAndGo = doF . liftM2 (.) W.greedyView W.shift
     myCFloats = ["confirm", "file_progress", "download", "error", "notification"
                , "toolbar", "Oracle VM VirtualBox Manager", "jetbrains-idea" , "guake-toggle"
-               , "Guake", "Zathura", "Arandr", "Galculator"]
+               , "Guake", "Arandr", "Galculator"]
     myTFloats = ["Downloads", "Save As..."]
     myRFloats = []
     myIgnores = ["desktop_window"]
-    my1Shifts = ["Google-chrome", "Firefox"]
+    my1Shifts = ["Google-chrome", "qutebrowser"]
     my2Shifts = ["Emacs", "idea"]
     -- my3Shifts = ["Inkscape"]
     -- my4Shifts = []
@@ -159,11 +159,6 @@ myTall = renamed [Replace "tall"]
   $ mySpacing 5
   $ ResizableTall 1 (3/100) (1/2) []
 
-mySpiral = renamed [Replace "spiral"]
-  $ mySpacing 5
-  $ limitWindows 12
-  $ spiral (125 % 146)
-
 myGrid = renamed [Replace "grid"]
   $ mySpacing 5
   $ limitWindows 12
@@ -186,7 +181,7 @@ myFull = Full
 
 myLayoutHook = refocusLastLayoutHook . trackFloating $ avoidStruts $ toggleLayouts myFloat $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ lessBorders Screen myLayouts
   where
-    myLayouts = myTall ||| myMirror ||| mySpiral ||| myGrid ||| myFull ||| myFloat ||| myTabs
+    myLayouts = myTall ||| myMirror ||| myGrid ||| myFull ||| myFloat ||| myTabs
 
 myKeys :: [(String, X ())]
 myKeys =
@@ -201,10 +196,10 @@ myKeys =
         --- Useful programs to launch
         , ("M-<Return>", spawn myTerminal)
         , ("M-f",        spawn myFileManager)
-        -- , ("M-x", spawn "Scripts/xmenu/xmenu.sh")
+        , ("M-x", spawn "Scripts/xmenu/xmenu.sh")
         , ("M-<Delete>", spawn "xkill")
 
-        , ("M-d e", spawn myEmacs)
+        , ("M-e", spawn myEmacs)
 
         -- Flameshot
         , ("C-S-<Print>", spawn "flameshot gui")
@@ -213,13 +208,11 @@ myKeys =
         -- , ("M-s", namedScratchpadAction myScratchPads "terminal")
 
         -- Other
-        --, ("M-m",        sendMessage ToggleStruts)
         , ("M-m", sendMessage (MT.Toggle NBFULL) >> sendMessage ToggleStruts) -- Toggles noborder/full
         , ("M-<Space>",  spawn "/home/artemy/Scripts/layout-switcher.sh")
         , ("M-<End>",    spawn "systemctl suspend")
-        , ("M-<Escape>", spawn "i3lock -c 000000")
-       -- , ("S-M1-u",  spawn "setxkbmap ua")
-        , ("M-<F1>",  spawn "setxkbmap ua")
+        , ("M-<Escape>", spawn "betterlockscreen --lock dimblur")
+        , ("M-u",  spawn "setxkbmap ua")
 
         -- Kill windows
         , ("M-S-c", kill1)
