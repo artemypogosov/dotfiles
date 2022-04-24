@@ -1,6 +1,7 @@
 alacritty
 arandr
 blueman
+betterlockscreen
 brightnessctl
 calcurse
 cmatrix
@@ -14,7 +15,6 @@ flameshot-git
 galculator
 guake
 htop
-i3lock-color
 kitty
 lxappearance
 lxqt-powermanagement

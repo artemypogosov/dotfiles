@@ -8,5 +8,4 @@ mattermost-desktop
 nerd-fonts-mononoki
 nerd-fonts-ubuntu-mono
 otf-font-awesome-5
-powerkit
 spotify
