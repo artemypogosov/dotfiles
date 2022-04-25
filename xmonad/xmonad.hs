@@ -192,6 +192,7 @@ myKeys =
 
         --- Run dmenu
         , ("M-S-<Return>", spawn "dmenu_run -i -p \"Run: \"")
+        , ("S-<Return>", spawn "rofi -show run")
 
         --- Useful programs to launch
         , ("M-<Return>", spawn myTerminal)

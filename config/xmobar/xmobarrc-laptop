@@ -88,8 +88,8 @@ Config {
                           , "--lows"              , "<fc=#cc241d><fn=2> </fn></fc>"
                           , "--on-icon-pattern"   , ""
                           , "-A"                  , "15"
-                          , "-a"                  , "notify-send -u critical 'Battery running out!'"
-                          ] 100
+                          -- , "-a"                  , "notify-send -u critical 'Battery running out!'"
+                          ] 600
              ,   Run Com ".local/bin/brightness" [] "brightness" 10
              ,   Run CoreTemp ["-t", "<fn=2></fn> <core0> : <core1> <fn=1>糖</fn> ",
                                "-L", "40", "-H", "60",
