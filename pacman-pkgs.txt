@@ -16,7 +16,7 @@ galculator
 guake
 htop
 kitty
-lxappearance
+lxappearance-gtk3
 lxqt-powermanagement
 moc
 nitrogen

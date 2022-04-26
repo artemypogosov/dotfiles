@@ -42,7 +42,7 @@ import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Spacing
 import XMonad.Layout.Spiral (spiral)
 import XMonad.Layout.SubLayouts
-import XMonad.Layout.ToggleLayouts
+import XMonad.Layout.ToggleLayouts as T
 import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
 
 -- FIX FLOAT BEHAVIOR
@@ -186,13 +186,12 @@ myLayoutHook = refocusLastLayoutHook . trackFloating $ avoidStruts $ toggleLayou
 myKeys :: [(String, X ())]
 myKeys =
         --- Xmonad
-        [ ("M-C-r", spawn "xmonad --recompile")  -- Recompiles xmonad
-        , ("M-S-r", spawn "xmonad --restart")    -- Restarts xmonad
-        , ("M-S-q", io exitSuccess)              -- Quits xmonad
-
+        [ ("M-C-r", spawn "xmonad --recompile")   -- Recompiles xmonad
+        , ("M-S-r", spawn "xmonad --restart")     -- Restarts xmonad
+        , ("M-S-q", io exitSuccess)               -- Quits xmonad
         --- Run dmenu
-        , ("M-S-<Return>", spawn "dmenu_run -i -p \"Run: \"")
-        , ("S-<Return>", spawn "rofi -show run")
+        -- , ("M-S-<Return>", spawn "dmenu_run -i -p \"Run: \"")
+        , ("M-S-<Return>", spawn "rofi -show drun")
 
         --- Useful programs to launch
         , ("M-<Return>", spawn myTerminal)
@@ -204,8 +203,10 @@ myKeys =
 
         -- Flameshot
         , ("C-S-<Print>", spawn "flameshot gui")
-        , ("S-<Print>",   spawn "flameshot full -c -p ~/Pictures/Screenshots/SS") -- save and add to clipboard
+        --, ("<Print>", spawn "flameshot screen -n 0 -c")
+        , ("C-<Print>",   spawn "flameshot full -c -p ~/Pictures/Screenshots/SS") -- save and add to clipboard
         , ("<Print>",     spawn "flameshot full    -p ~/Pictures/Screenshots/SS") -- just save
+
         -- , ("M-s", namedScratchpadAction myScratchPads "terminal")
 
         -- Other
@@ -221,6 +222,7 @@ myKeys =
 
         -- Layout
         , ("M-<Tab>", sendMessage NextLayout)
+        , ("M-S-f", sendMessage (T.Toggle "float")) -- Toggles my 'floats' layout
 
         -- Laptop specific
         , ("<XF86AudioMute>",        spawn "amixer set Master toggle")

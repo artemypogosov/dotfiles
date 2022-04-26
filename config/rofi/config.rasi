@@ -1,0 +1,19 @@
+configuration {
+    modi: "run,drun,filebrowser";
+    font: "Source Code Pro 12";
+    show-icons: true;
+    terminal: "alacritty";
+    icon-theme: "oomox-gruvbox-dark";
+    scrollbar: false;
+    drun-display-format: " {name} [<span weight='light' size='small'><i>({generic})</i></span>]";
+    sidebar-mode: false;
+  timeout {
+      action: "kb-cancel";
+      delay:  0;
+  }
+  filebrowser {
+      directories-first: true;
+      sorting-method:    "name";
+  }
+}
+@theme "/usr/share/rofi/themes/gruvbox-dark.rasi"
