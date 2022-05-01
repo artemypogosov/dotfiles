@@ -196,7 +196,7 @@ myKeys =
         --- Useful programs to launch
         , ("M-<Return>", spawn myTerminal)
         , ("M-f",        spawn myFileManager)
-        , ("M-x", spawn "Scripts/xmenu/xmenu.sh")
+        , ("M-r",        spawn (myTerminal ++ " -e ranger"))
         , ("M-<Delete>", spawn "xkill")
 
         , ("M-e", spawn myEmacs)
@@ -229,7 +229,6 @@ myKeys =
         , ("<XF86AudioMicMute>",     spawn "amixer set Capture toggle")
         , ("<XF86AudioLowerVolume>", spawn "amixer -q sset Master 5%-")
         , ("<XF86AudioRaiseVolume>", spawn "amixer -q sset Master 5%+")
-
 
         , ("<XF86AudioPlay>", spawn "playerctl play-pause")
         , ("<XF86AudioPrev>", spawn "playerctl previous")
