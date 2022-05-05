@@ -195,13 +195,12 @@ myKeys =
 
         --- Useful programs to launch
         , ("M-<Return>", spawn myTerminal)
+        , ("M-e",        spawn myEmacs)
         , ("M-f",        spawn myFileManager)
         , ("M-r",        spawn (myTerminal ++ " -e ranger"))
         , ("M-<Delete>", spawn "xkill")
 
-        , ("M-e", spawn myEmacs)
-
-        -- Flameshot
+        -- Screenshots
         , ("C-S-<Print>", spawn "flameshot gui")
         --, ("<Print>", spawn "flameshot screen -n 0 -c")
         , ("C-<Print>",   spawn "flameshot full -c -p ~/Pictures/Screenshots/SS") -- save and add to clipboard
