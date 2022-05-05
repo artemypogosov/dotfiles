@@ -105,7 +105,7 @@ myStartupHook = do
   spawnOnce "$HOME/.xmonad/scripts/autostart.sh"
   spawn "sleep 2 && trayer --edge bottom --align right --widthtype request --padding 5 --SetDockType true --SetPartialStrut false --expand true --monitor 1 --transparent true --alpha 256 --height 20"
   spawnOnce "$HOME/Scripts/init-us.sh"
-  spawnOnce "$HOME/Scripts/fix-mic-led.sh"
+  -- spawnOnce "$HOME/Scripts/fix-mic-led.sh"
   setDefaultCursor xC_left_ptr
   setWMName "LG3D"
 
@@ -225,7 +225,7 @@ myKeys =
 
         -- Laptop specific
         , ("<XF86AudioMute>",        spawn "amixer set Master toggle")
-        , ("<XF86AudioMicMute>",     spawn "amixer set Capture toggle")
+        , ("<XF86AudioMicMute>",     spawn "$HOME/Scripts/toggle-mic.sh")
         , ("<XF86AudioLowerVolume>", spawn "amixer -q sset Master 5%-")
         , ("<XF86AudioRaiseVolume>", spawn "amixer -q sset Master 5%+")
 
