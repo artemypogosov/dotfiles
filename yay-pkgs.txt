@@ -9,3 +9,4 @@ nerd-fonts-mononoki
 nerd-fonts-ubuntu-mono
 otf-font-awesome-5
 spotify
+vimiv-qt

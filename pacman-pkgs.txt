@@ -29,7 +29,6 @@ trayer
 tree
 unclutter
 upower
-vimiv
 volumeicon
 youtube-dl
 zathura
