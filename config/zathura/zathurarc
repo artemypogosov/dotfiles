@@ -7,7 +7,6 @@ set page-padding                1
 map K zoom in
 map J zoom out
 map p print
-map i info
 
 ### THEME
 set notification-error-bg       "#282828" # bg
@@ -46,7 +45,6 @@ set render-loading-bg           "#282828" # bg
 set render-loading-fg           "#ebdbb2" # fg
 
 # Recolor book content's color
-set recolor                     "true"
+set recolor                     false
 set recolor-lightcolor          "#282828" # bg
 set recolor-darkcolor           "#ebdbb2" # fg
-#set recolor-keephue             true      # keep original color
