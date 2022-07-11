@@ -4,6 +4,7 @@ gruvbox-dark-icons-gtk
 gruvbox-icon-theme
 gruvbox-material-gtk-theme-git
 gruvbox-material-icon-theme-git
+htim
 mattermost-desktop
 nerd-fonts-mononoki
 nerd-fonts-ubuntu-mono

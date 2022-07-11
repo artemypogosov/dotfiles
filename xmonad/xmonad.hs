@@ -74,7 +74,7 @@ myFont :: String
 myFont = "xft:Ubuntu:regular:size=9:antialias=true:hinting=true"
 
 myBorderWidth :: Dimension
-myBorderWidth = 1
+myBorderWidth = 2
 
 myEmacs :: String
 myEmacs = "emacsclient -c -a 'emacs' "
@@ -177,7 +177,8 @@ myTabs = renamed [Replace "tabs"]
   $ noBorders
   $ tabbed shrinkText myTabTheme
 
-myFull = Full
+myFull = renamed [Replace "full"]
+  $ Full
 
 myLayoutHook = refocusLastLayoutHook . trackFloating $ avoidStruts $ toggleLayouts myFloat $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ lessBorders Screen myLayouts
   where
@@ -238,14 +239,14 @@ myKeys =
         ]
 
 
-myEventHook = refocusLastEventHook <+> hintsEventHook <+> fullscreenEventHook
+myEventHook = refocusLastEventHook <+> hintsEventHook
     where
         refocusLastEventHook = refocusLastWhen isFloat
 
 main :: IO ()
 main = do
   xmproc <- spawnPipe "xmobar $HOME/.config/xmobar/xmobarrc-laptop"
-  xmonad $ docks def  {
+  xmonad $ ewmhFullscreen $ docks def  {
   terminal             = myTerminal
   , modMask            = myModMask
   , startupHook        = myStartupHook
