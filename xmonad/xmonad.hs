@@ -117,7 +117,7 @@ myManageHook = composeAll . concat $
     , [title     =? t --> doFloat       | t <- myTFloats]
     , [resource  =? r --> doFloat       | r <- myRFloats]
     , [resource  =? i --> doIgnore      | i <- myIgnores]
-    , [(className =? x <||> title =? x <||> resource =? x) --> doShiftAndGo "web" | x <- my1Shifts]
+   -- , [(className =? x <||> title =? x <||> resource =? x) --> doShiftAndGo "web" | x <- my1Shifts]
     , [(className =? x <||> title =? x <||> resource =? x) --> doShiftAndGo "dev" | x <- my2Shifts]
     -- , [(className =? x <||> title =? x <||> resource =? x) --> doShiftAndGo "\61947" | x <- my3Shifts]
     -- , [(className =? x <||> title =? x <||> resource =? x) --> doShiftAndGo "\61635" | x <- my4Shifts]
@@ -131,7 +131,7 @@ myManageHook = composeAll . concat $
     myTFloats = ["Downloads", "Save As..."]
     myRFloats = []
     myIgnores = ["desktop_window"]
-    my1Shifts = ["Google-chrome", "qutebrowser"]
+    -- my1Shifts = ["Google-chrome", "qutebrowser"]
     my2Shifts = ["Emacs", "idea"]
     -- my3Shifts = ["Inkscape"]
     -- my4Shifts = []
@@ -140,7 +140,7 @@ myManageHook = composeAll . concat $
 
 -- If fewer than two windows. So a single window has no gaps.
 mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
-mySpacing i = spacingRaw True (Border i i i i) True (Border i i i i) True
+mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
 
 -- Setting colors for tabs layout and tabs sublayout.
 myTabTheme = def { fontName            = myFont
@@ -154,8 +154,8 @@ myTabTheme = def { fontName            = myFont
 
 myTall = renamed [Replace "tall"]
   $ windowNavigation
- -- $ subLayout [] (smartBorders Simplest)
-  $ limitWindows 12
+  $ subLayout [] (smartBorders Simplest)
+  $ limitWindows 5
   $ mySpacing 5
   $ ResizableTall 1 (3/100) (1/2) []
 

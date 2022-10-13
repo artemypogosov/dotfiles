@@ -14,7 +14,7 @@
 
 export HISTCONTROL=ignoreboth:erasedups
 
-# Make nano the default editor
+# Default editor
 
 export EDITOR='nvim'
 export VISUAL='nvim'
@@ -29,10 +29,16 @@ if [ -d "$HOME/.local/bin" ] ;
   then PATH="$HOME/.local/bin:$PATH"
 fi
 
-#ignore upper and lowercase when TAB completion
+# Ignore upper and lowercase when TAB completion
 bind "set completion-ignore-case on"
 
-#list
+# ALIASES
+## PFM
+alias figwheel-clear-port='sudo kill -9 `sudo lsof -t -i:3449`'
+alias figwheel-start-repl='FIGWHEEL_SERVER_PORT=3499 NREPL_PORT=8333 lein repl'
+alias git-pull-qbj='git pull origin qb-java-merging-2022-01'
+
+## ls
 alias ls='ls --color=auto'
 alias la='ls -a'
 alias ll='ls -la'
@@ -45,51 +51,51 @@ alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 
-#readable output
+## Readable output
 alias df='df -h'
 
-#free
+## Free
 alias free="free -mt"
 
-#use all cores
+## Use all cores
 alias uac="sh ~/.bin/main/000*"
 
-#continue download
+## Continue download
 alias wget="wget -c"
 
-#userlist
+## Userlist
 alias userlist="cut -d: -f1 /etc/passwd"
 
-# Aliases for software managment
+## Aliases for software managment
 alias update='sudo pacman -Syyu'
 
 ## Cleanup orphaned packages
 alias cleanup='sudo pacman -Rns $(pacman -Qtdq)'
 
-#ps
+## ps
 alias psgrep="ps aux | grep -v grep | grep -i -e VSZ -e"
 
-#add new fonts
+## Add new fonts
 alias update-fc='sudo fc-cache -fv'
 
-#switch between bash and zsh
+## Switch between bash and zsh
 alias tobash="sudo chsh $USER -s /bin/bash && echo 'Now log out.'"
 alias tozsh="sudo chsh $USER -s /bin/zsh && echo 'Now log out.'"
 
-#hardware info --short
+## Hardware info --short
 alias hw="hwinfo --short"
 
-#get fastest mirrors in your neighborhood
+## Get fastest mirrors in your neighborhood
 alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
 alias mirrord="sudo reflector --latest 30 --number 10 --sort delay --save /etc/pacman.d/mirrorlist"
 alias mirrors="sudo reflector --latest 30 --number 10 --sort score --save /etc/pacman.d/mirrorlist"
 alias mirrora="sudo reflector --latest 30 --number 10 --sort age --save /etc/pacman.d/mirrorlist"
 
-#our experimental - best option for the moment
+## Our experimental - best option for the moment
 alias mirrorx="sudo reflector --age 6 --latest 20  --fastest 20 --threads 5 --sort rate --protocol https --save /etc/pacman.d/mirrorlist"
 alias mirrorxx="sudo reflector --age 6 --latest 20  --fastest 20 --threads 20 --sort rate --protocol https --save /etc/pacman.d/mirrorlist"
 
-#mounting the folder Public for exchange between host and guest on virtualbox
+## Mounting the folder Public for exchange between host and guest on virtualbox
 alias vbm="sudo /usr/local/bin/arcolinux-vbox-share"
 
 #shopt

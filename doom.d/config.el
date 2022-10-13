@@ -80,7 +80,12 @@
 (add-hook 'haskell-mode-hook #'lsp)
 (add-hook 'haskell-literate-mode-hook #'lsp)
 
-
+(defun org-todo-region ()
+  (interactive)
+  (let ((scope (if mark-active 'region 'tree))
+        (state (org-fast-todo-selection))
+        (org-enforce-todo-dependencies nil))
+    (org-map-entries (lambda () (org-todo state)) nil scope)))
 
 
 ;; Here are some additional functions/macros that could help you configure Doom:
