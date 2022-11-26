@@ -34,8 +34,14 @@ bind "set completion-ignore-case on"
 
 # ALIASES
 ## PFM
-alias figwheel-clear-port='sudo kill -9 `sudo lsof -t -i:3449`'
-alias figwheel-start-repl='FIGWHEEL_SERVER_PORT=3499 NREPL_PORT=8333 lein repl'
+alias pfm-figwheel-clear-port='sudo kill -9 `sudo lsof -t -i:3451`'
+alias pfm-figwheel-start-repl='FIGWHEEL_SERVER_PORT=3499 NREPL_PORT=8333 lein repl'
+
+alias pfm-start-repl='make quick_stop down up switch_to_clojure_repl'
+alias pfm-delete-db-start-repl='make quick_stop down volumes/delete/db volumes/delete/storage up switch_to_clojure_repl'
+alias pfm-setup-db='(cd ../demo ; make bdm/setup && fighweel-start-repl)'
+
+
 alias git-pull-qbj='git pull origin qb-java-merging-2022-01'
 
 ## ls

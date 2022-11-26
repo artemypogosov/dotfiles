@@ -70,9 +70,9 @@
 (display-time-mode 1)
 
 ; On laptops it's nice to know how much power you have
-(when (and (funcall battery-status-function)
-           (not (string-match-p "N/A" (battery-format "%B"(funcall battery-status-function)))))
-  (display-battery-mode 1))
+;(when (and (funcall battery-status-function)
+;           (not (string-match-p "N/A" (battery-format "%B"(funcall battery-status-function)))))
+;  (display-battery-mode 1))
 
 ;; (global-subword-mode 1)
 

@@ -193,12 +193,11 @@ myKeys =
         --- Run dmenu
         -- , ("M-S-<Return>", spawn "dmenu_run -i -p \"Run: \"")
         , ("M-S-<Return>", spawn "rofi -show drun")
-
         --- Useful programs to launch
-        , ("M-<Return>", spawn myTerminal)
-        , ("M-e",        spawn myEmacs)
-        , ("M-f",        spawn myFileManager)
-        , ("M-r",        spawn (myTerminal ++ " -e ranger"))
+        , ("M-<Return>",   spawn myTerminal)
+        , ("M-e e",        spawn myEmacs)
+        , ("M-f f",        spawn myFileManager)
+        , ("M-r r",        spawn (myTerminal ++ " -e ranger"))
         , ("M-<Delete>", spawn "xkill")
 
         -- Screenshots
@@ -245,7 +244,7 @@ myEventHook = refocusLastEventHook <+> hintsEventHook
 
 main :: IO ()
 main = do
-  xmproc <- spawnPipe "xmobar $HOME/.config/xmobar/xmobarrc-laptop"
+  xmproc <- spawnPipe "xmobar $HOME/.config/xmobar/xmobarrc"
   xmonad $ ewmhFullscreen $ docks def  {
   terminal             = myTerminal
   , modMask            = myModMask
