@@ -5,7 +5,7 @@ xsetroot -cursor_name left_ptr &
 
 # Starting applications at boot time
 
-picom &
+picom --legacy-backends &
 dunst &
 udiskie &
 lxqt-powermanagement &
