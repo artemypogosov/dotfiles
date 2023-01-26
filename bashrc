@@ -39,7 +39,7 @@ alias pfm-figwheel-start-repl='FIGWHEEL_SERVER_PORT=3499 NREPL_PORT=8333 lein re
 
 alias pfm-start-repl='make quick_stop down up switch_to_clojure_repl'
 alias pfm-delete-db-start-repl='make quick_stop down volumes/delete/db volumes/delete/storage up switch_to_clojure_repl'
-alias pfm-setup-db='(cd ../demo ; make bdm/setup && pfm-fighweel-start-repl)'
+alias pfm-setup-db='(cd ../demo ; make bdm/setup ; cd ../frontend ; pfm-figwheel-start-repl)'
 
 
 alias git-pull-qbj='git pull origin qb-java-merging-2022-01'
