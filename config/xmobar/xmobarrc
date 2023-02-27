@@ -1,14 +1,14 @@
 Config {
         --- appearance
 
-        font = "xft:Ubuntu:weight=bold:pixelsize=12:antialias=true:hinting=true"
-        , additionalFonts = [ "xft:Mononoki Nerd Font:pixelsize=11:antialias=true:hinting=true"
-                            , "xft:Font Awesome 5 Free Solid:pixelsize=12"
-                            , "xft:Font Awesome 5 Brands:pixelsize=12"]
+        font = "Ubuntu Bold 10.5"
+        , additionalFonts = [ "Mononoki Nerd Font 10"
+                            , "Font Awesome 5 Free Solid 10"
+                            , "Font Awesome 5 Brands 10"]
        , bgColor = "#282828"
        , fgColor = "#928374"
        , alpha = 200
-       , position = TopSize C 100 20
+       , position = TopSize C 100 22
 
        --- general
 
@@ -39,7 +39,7 @@ Config {
                                    ] 10
 
             -- cpu usage in percent
-            , Run Cpu [  "-t"       , "<fn=1></fn>   [<total>%]"
+            , Run Cpu [  "-t"       , "C:  [ <total>% ]"
                        , "-L"       , "25"
                        , "-H"       , "75"
                        , "--low"    , "#928374"
@@ -48,7 +48,7 @@ Config {
                       ] 20
 
             -- RAM usage
-            , Run Memory [  "-t"       , "<fn=1>\xf233</fn>   [<usedratio>%]"
+            , Run Memory [  "-t"       , "R: [ <usedratio>% ]"
                           , "-L"       , "50"
                           , "-H"       , "90"
                           , "--low"    , "#928374"
@@ -74,7 +74,7 @@ Config {
 
             , Run Com ".local/bin/pacupdate" [] "pacupdate" 36000
 
-            , Run MultiCoreTemp ["-t", "<fn=2></fn> [<avg>°C]",
+            , Run MultiCoreTemp ["-t", "T:  [ <avg>°C ]",
                                  "-L", "50", "-H", "80",
                                  "-l", "lightblue", "-n", "gray", "-h", "red",
                                  "--", "--mintemp", "20", "--maxtemp", "100"] 50
@@ -84,5 +84,5 @@ Config {
             ]
        , sepChar  = "%"
        , alignSep = "}{"
-       , template = " %UnsafeStdinReader% }<action=`alacritty -e calcurse`>%date%</action>{%mpris2%   %default:Master% |  %multicoretemp%   <action=`alacritty -e htop`>%cpu%</action>   %memory%  |  <fn=2></fn> <action=`alacritty -e sudo pacman -Syu`>%pacupdate%</action>  :  %kbd% "
+       , template = " %UnsafeStdinReader% }<action=`alacritty -e calcurse`>%date%</action>{%mpris2%   %default:Master% |  %multicoretemp%   <action=`alacritty -e htop`>%cpu%</action>   %memory%  |  U:  <action=`alacritty -e sudo pacman -Syu`>%pacupdate%</action>  :  %kbd% "
        }

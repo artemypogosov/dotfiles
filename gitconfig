@@ -6,4 +6,6 @@
 	last = "log -1"
 [user]
 	email = artemypogosov@gmail.com
-	name = Artemy Pogosov
+	name = Artem Pogosov
+[core]
+	editor = emacs
