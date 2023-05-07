@@ -1,10 +1,10 @@
 Config {
         --- appearance
 
-        font = "xft:Ubuntu:weight=bold:pixelsize=12:antialias=true:hinting=true"
-        , additionalFonts = [ "xft:Mononoki Nerd Font:pixelsize=11:antialias=true:hinting=true"
-                            , "xft:Font Awesome 5 Free Solid:pixelsize=12"
-                            , "xft:Font Awesome 5 Brands:pixelsize=12"]
+        font = "Ubuntu Bold 10.5"
+        , additionalFonts = [ "Mononoki Nerd Font 10"
+                            , "Font Awesome 5 Free Solid 10"
+                            , "Font Awesome 5 Brands 10"]
        , bgColor = "#282828"
        , fgColor = "#928374"
        , alpha = 200
@@ -91,7 +91,7 @@ Config {
                           -- , "-a"                  , "notify-send -u critical 'Battery running out!'"
                           ] 50
              ,   Run Com ".local/bin/brightness" [] "brightness" 10
-             ,   Run CoreTemp ["-t", "<fn=2></fn> <core0> : <core1> <fn=1>糖</fn> ",
+             ,   Run CoreTemp ["-t", "<fn=2></fn> <core0> : <core1>  ",
                                "-L", "40", "-H", "60",
                                "-l", "lightblue", "-n", "gray", "-h", "red"] 50
 
@@ -100,5 +100,5 @@ Config {
             ]
        , sepChar  = "%"
        , alignSep = "}{"
-       , template = " %UnsafeStdinReader% }<action=`alacritty -e calcurse`>%date%</action>{%mpris2%   %default:Master% |  %brightness% <fn=1></fn>    |  %coretemp%   <action=`alacritty -e htop`>%cpu%</action>   %memory%  |  <fn=2></fn> <action=`alacritty -e sudo pacman -Syu`>%pacupdate%</action>  :  %kbd%  :  %battery%"
+       , template = " %UnsafeStdinReader% }<action=`alacritty -e calcurse`>%date%</action>{%mpris2%   %default:Master% |  %brightness% <fn=1></fn>    |  %coretemp% |   %cpu%   %memory%  |  <fn=2></fn> <action=`alacritty -e sudo pacman -Syu`>%pacupdate%</action>  :  %kbd%  :  %battery%"
        }
