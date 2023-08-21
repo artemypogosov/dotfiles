@@ -2,13 +2,6 @@
 # ~/.bashrc
 #
 
-#Ibus settings if you need them
-#type ibus-setup in terminal to change settings and start the daemon
-#delete the hashtags of the next lines and restart
-#export GTK_IM_MODULE=ibus
-#export XMODIFIERS=@im=dbus
-#export QT_IM_MODULE=ibus
-
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
@@ -16,8 +9,8 @@ export HISTCONTROL=ignoreboth:erasedups
 
 # Default editor
 
-export EDITOR='nvim'
-export VISUAL='nvim'
+export EDITOR='emacs'
+export VISUAL='emacs'
 
 PS1='[\u@\h \W]\$ '
 
@@ -32,17 +25,27 @@ fi
 # Ignore upper and lowercase when TAB completion
 bind "set completion-ignore-case on"
 
-# ALIASES
-## PFM
-alias pfm-figwheel-clear-port='sudo kill -9 `sudo lsof -t -i:3451`'
-alias pfm-figwheel-start-repl='FIGWHEEL_SERVER_PORT=3499 NREPL_PORT=8333 lein repl'
+### ALIASES
 
-alias pfm-start-repl='make quick_stop down up switch_to_clojure_repl'
-alias pfm-delete-db-start-repl='make quick_stop down volumes/delete/db volumes/delete/storage up switch_to_clojure_repl'
+## START OF PFM ALIASES --------------------------------------------------
+
+##alias pfm-figwheel-clear-port='sudo kill -9 `sudo lsof -t -i:3451`'
+##alias pfm-figwheel-start-repl='FIGWHEEL_SERVER_PORT=3499 NREPL_PORT=8333 lein repl'
+
+alias pfm-hard-rebuild='make quick_stop down volumes/delete/all volumes/delete/config init_env_file up/from_scratch bdm/setup frontend2/setup frontend2/clean frontend2/install switch_to_clojure_repl'
+alias pfm-soft-rebuild='make quick_stop down init_env_file up/from_scratch frontend2/setup frontend2/clean frontend2/install switch_to_clojure_repl'
+
+alias pfm-setup-frontend='make frontend2/setup frontend2/clean frontend2/install'
+alias pfm-run-frontend-repl='make frontend2/repl'
+alias pfm-run-backend-repl='make quick_stop down up switch_to_clojure_repl'
+
+##alias pfm-delete-db-start-repl='make quick_stop down volumes/delete/db volumes/delete/storage up switch_to_clojure_repl'
 alias pfm-setup-db='(cd ../demo ; make bdm/setup ; cd ../frontend ; pfm-figwheel-start-repl)'
 
 
-alias git-pull-qbj='git pull origin qb-java-merging-2022-01'
+alias pfm-pull-revamp='git pull origin qb-java-revamp-ui'
+
+## END OF PFM ALIASES --------------------------------------------------
 
 ## ls
 alias ls='ls --color=auto'
@@ -62,12 +65,6 @@ alias df='df -h'
 
 ## Free
 alias free="free -mt"
-
-## Use all cores
-alias uac="sh ~/.bin/main/000*"
-
-## Continue download
-alias wget="wget -c"
 
 ## Userlist
 alias userlist="cut -d: -f1 /etc/passwd"
@@ -169,7 +166,7 @@ ex ()
 }
 
 # Run fm6000
-fm6000 -r
+fm6000 -r -c "random"
 
 # Temp fix for layouts
 setxkbmap us
@@ -179,3 +176,4 @@ setxkbmap us
 
 # Set PFM NPM_AUTH_TOKEN
 export NPM_AUTH_TOKEN=jkSufCaf73J3LY3uXbVM
+
