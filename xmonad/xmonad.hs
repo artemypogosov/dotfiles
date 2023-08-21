@@ -7,13 +7,16 @@ import qualified XMonad.StackSet as W
 -- UTILS
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Run (spawnPipe)
-import XMonad.Util.EZConfig (additionalKeysP, removeKeysP)
+import XMonad.Util.EZConfig (removeKeysP, mkNamedKeymap)
 import XMonad.Util.Cursor
+import XMonad.Util.NamedActions
 import XMonad.Util.NamedScratchpad
 
 -- ACTIONS
 import XMonad.Actions.CopyWindow (kill1)
 import XMonad.Actions.WithAll (killAll)
+import XMonad.Actions.WithAll (sinkAll, killAll)
+import XMonad.Actions.CycleWS (Direction1D(..), moveTo, shiftTo, WSType(..), nextScreen, prevScreen)
 
 -- DATA
 import Data.Monoid
@@ -66,6 +69,9 @@ myModMask = mod4Mask
 
 myTerminal :: String
 myTerminal = "alacritty"
+
+myBrowser :: String
+myBrowser = "qutebrowser"
 
 myFileManager :: String
 myFileManager = "pcmanfm"
@@ -126,8 +132,8 @@ myManageHook = composeAll . concat $
   where
     doShiftAndGo = doF . liftM2 (.) W.greedyView W.shift
     myCFloats = ["confirm", "file_progress", "download", "error", "notification"
-               , "toolbar", "Oracle VM VirtualBox Manager", "jetbrains-idea" , "guake-toggle"
-               , "Guake", "Arandr", "Galculator"]
+               , "toolbar", "Oracle VM VirtualBox Manager", "jetbrains-idea"
+               , "Arandr", "Galculator", "guake-toggle", "Guake"]
     myTFloats = ["Downloads", "Save As..."]
     myRFloats = []
     myIgnores = ["desktop_window"]
@@ -184,59 +190,62 @@ myLayoutHook = refocusLastLayoutHook . trackFloating $ avoidStruts $ toggleLayou
   where
     myLayouts = myTall ||| myMirror ||| myGrid ||| myFull ||| myFloat ||| myTabs
 
-myKeys :: [(String, X ())]
-myKeys =
-        --- Xmonad
-        [ ("M-C-r", spawn "xmonad --recompile")   -- Recompiles xmonad
-        , ("M-S-r", spawn "xmonad --restart")     -- Restarts xmonad
-        , ("M-S-q", io exitSuccess)               -- Quits xmonad
-        --- Run dmenu
-        -- , ("M-S-<Return>", spawn "dmenu_run -i -p \"Run: \"")
-        , ("M-S-<Return>", spawn "rofi -show drun")
-        --- Useful programs to launch
-        , ("M-<Return>",   spawn myTerminal)
-        , ("M-e e",        spawn myEmacs)
-        , ("M-f f",        spawn myFileManager)
-        , ("M-r r",        spawn (myTerminal ++ " -e ranger"))
-        , ("M-<Delete>", spawn "xkill")
+myKeys c = mkNamedKeymap c $
+  -- General
+  [ ("M-C-r",                  addName "Recompile XMonad"       $ spawn "xmonad --recompile")
+  , ("M-S-r",                  addName "Restart XMonad"         $ spawn "xmonad --restart")
+  , ("M-S-q",                  addName "Quit XMonad"            $ io exitSuccess)
+  , ("M-S-c",                  addName "Kill focused window"    $ kill1)
+  , ("M-S-a c",                addName "Kill all windows on WS" $ killAll)]
 
-        -- Screenshots
-        , ("C-S-<Print>", spawn "flameshot gui")
-        --, ("<Print>", spawn "flameshot screen -n 0 -c")
-        , ("C-<Print>",   spawn "flameshot full -c -p ~/Pictures/Screenshots/SS") -- save and add to clipboard
-        , ("<Print>",     spawn "flameshot full    -p ~/Pictures/Screenshots/SS") -- just save
+  ^++^ -- Layout
+  [ ("M-S-m",                  addName "Swap focused W with master W"         $ windows W.swapMaster)
+  , ("M-m",                    addName "Toggle full screen mode [no borders]" $ sendMessage (MT.Toggle NBFULL) >> sendMessage ToggleStruts)
+  , ("M-<Tab>",                addName "Change layout"                        $ sendMessage NextLayout)]
 
-        -- , ("M-s", namedScratchpadAction myScratchPads "terminal")
+  ^++^ -- Favorite programs
+  [ ("M-S-<Return>",           addName "Launch Rofi"          $ spawn "rofi -show drun")
+  , ("M-<Return>",             addName "Launch myTerminal"    $ spawn myTerminal)
+ -- , ("M-b b",                  addName "Launch myBrowser"     $ spawn (myBrowser))
+  , ("M-f f",                  addName "Launch myFileManager" $ spawn (myFileManager))
+ -- , ("M-h h",                  addName "Launch htop"          $ spawn (myTerminal ++ " -e htop"))
+ -- , ("M-r r",                  addName "Launch ranger"        $ spawn (myTerminal ++ " -e ranger"))
+  ]
 
-        -- Other
-        , ("M-m", sendMessage (MT.Toggle NBFULL) >> sendMessage ToggleStruts) -- Toggles noborder/full
-        , ("M-<Space>",  spawn "/home/artemy/Scripts/layout-switcher.sh")
-        , ("M-<End>",    spawn "systemctl suspend")
-        , ("M-<Escape>", spawn "betterlockscreen --lock dimblur")
-        , ("M-u",  spawn "setxkbmap ua")
+  ^++^ -- Custom
+  [ ("M-<Space>",              addName "Switch keyboard layout" $ spawn "/home/artemy/Scripts/layout-switcher.sh")
+  , ("M-<End>",                addName "Zzz..."                 $ spawn "systemctl suspend")
+  , ("M-<Escape>",             addName "Lock screen"            $ spawn "betterlockscreen --lock dimblur")
+  , ("M-r",                    addName "ru"                     $ spawn "setxkbmap ru")]
 
-        -- Kill windows
-        , ("M-S-c", kill1)
-        , ("M-S-a c", killAll)
+  ---h^++^ -- Floating windows
+  --[ ("M-f",                    addName "Toggle float layout"      $ sendMessage (T.Toggle "float"))
+  --, ("M-t",                    addName "Sink a floating window"   $ withFocused $ windows . W.sink)
+  --, ("M-S-t",                  addName "Sink all floated windows" $ sinkAll)]
 
-        -- Layout
-        , ("M-<Tab>", sendMessage NextLayout)
-        , ("M-S-f", sendMessage (T.Toggle "float")) -- Toggles my 'floats' layout
+  ^++^ -- Doom Emacs
+  [ ("M-d d",                  addName "Emacsclient"         $ spawn (myEmacs))
+  , ("M-d b",                  addName "Emacsclient Ibuffer" $ spawn (myEmacs ++ ("--eval '(ibuffer)'")))
+  , ("M-d f",                  addName "Emacsclient Dired"   $ spawn (myEmacs ++ ("--eval '(dired nil)'")))
+  , ("M-d s",                  addName "Emacsclient Eshell"  $ spawn (myEmacs ++ ("--eval '(eshell)'")))
+  , ("M-d v",                  addName "Emacsclient Vterm"   $ spawn (myEmacs ++ ("--eval '(+vterm/here nil)'")))]
 
-        -- Laptop specific
-        , ("<XF86AudioMute>",        spawn "amixer set Master toggle")
-        , ("<XF86AudioMicMute>",     spawn "$HOME/Scripts/toggle-mic.sh")
-        , ("<XF86AudioLowerVolume>", spawn "amixer -q sset Master 5%-")
-        , ("<XF86AudioRaiseVolume>", spawn "amixer -q sset Master 5%+")
+  ^++^ -- Screenshot
+  [ ("C-S-<Print>",            addName "Flameshot GUI"       $ spawn "flameshot gui")]
 
-        , ("<XF86AudioPlay>", spawn "playerctl play-pause")
-        , ("<XF86AudioPrev>", spawn "playerctl previous")
-        , ("<XF86AudioNext>", spawn "playerctl next")
+  ^++^ -- Multimedia
+  [ ("<XF86AudioMute>",        addName "Mute audio"   $ spawn "amixer set Master toggle")
+  , ("<XF86AudioMicMute>",     addName "Mute mic"     $ spawn "$HOME/Scripts/toggle-mic.sh")
+  , ("<XF86AudioLowerVolume>", addName "Lower volume" $ spawn "amixer -q sset Master 5%-")
+  , ("<XF86AudioRaiseVolume>", addName "Raise volume" $ spawn "amixer -q sset Master 5%+")
 
-        , ("<XF86MonBrightnessUp>",   spawn "brightnessctl set +5%")
-        , ("<XF86MonBrightnessDown>", spawn "brightnessctl set 5%-")
-        ]
+  , ("<XF86AudioPlay>",        addName "Play/Pause audio" $ spawn "playerctl play-pause")
+  , ("<XF86AudioPrev>",        addName "Prev track"       $ spawn "playerctl previous")
+  , ("<XF86AudioNext>",        addName "Nex track"        $ spawn "playerctl next")
 
+  , ("<XF86MonBrightnessUp>",   addName "Brightness level up"   $ spawn "brightnessctl set +5%")
+  , ("<XF86MonBrightnessDown>", addName "Brightness level down" $ spawn "brightnessctl set 5%-")]
+  where nonNSP = WSIs (return (\ws -> W.tag ws /= "NSP"))
 
 myEventHook = refocusLastEventHook <+> hintsEventHook
     where
@@ -245,29 +254,29 @@ myEventHook = refocusLastEventHook <+> hintsEventHook
 main :: IO ()
 main = do
   xmproc <- spawnPipe "xmobar $HOME/.config/xmobar/xmobarrc"
-  xmonad $ ewmhFullscreen $ docks def  {
-  terminal             = myTerminal
-  , modMask            = myModMask
-  , startupHook        = myStartupHook
-  , manageHook         = myManageHook
-  , layoutHook         = myLayoutHook
-  , workspaces         = myWorkspaces
-  , borderWidth        = myBorderWidth
-  , normalBorderColor  = myNormColor
-  , handleEventHook    = myEventHook
-  , focusedBorderColor = myFocusColor
-  , clickJustFocuses = myClickJustFocuses
-  , focusFollowsMouse  = myFocusFollowsMouse
-  , logHook =  dynamicLogWithPP xmobarPP {
-      ppCurrent         = xmobarColor "#458588" "" . wrap "[" "]"
-      , ppTitle           = xmobarColor "#b3afc2" "" . shorten 30
-      , ppHidden          = xmobarColor "#83a598" "" . wrap "*" ""    -- Hidden workspaces
-      , ppHiddenNoWindows = xmobarColor "#928374" ""                  -- Hidden workspaces (no windows)
-      , ppVisible         = xmobarColor "#98971a" ""                  -- Visible but not current workspace
-      , ppUrgent          = xmobarColor "#C45500" "" . wrap "!" "!"   -- Urgent workspace
-      , ppSep             =  "<fc=#888> <fn=1>|</fn> </fc>"           -- Separator character
-      , ppExtras          = [windowCount]
-      , ppOrder           = \(ws:l:t:wc) -> [ws, l, head wc, t]
-      , ppOutput          = hPutStrLn xmproc
-      }
-} `additionalKeysP` myKeys
+  xmonad $ ewmhFullscreen $ addDescrKeys ((mod4Mask, xK_F1), xMessage) myKeys $ docks  def  {
+    terminal              = myTerminal
+  , modMask               = myModMask
+  , startupHook           = myStartupHook
+  , manageHook            = myManageHook
+  , layoutHook            = myLayoutHook
+  , workspaces            = myWorkspaces
+  , borderWidth           = myBorderWidth
+  , normalBorderColor     = myNormColor
+  , handleEventHook       = myEventHook
+  , focusedBorderColor    = myFocusColor
+  , clickJustFocuses      = myClickJustFocuses
+  , focusFollowsMouse     = myFocusFollowsMouse
+  , logHook               = dynamicLogWithPP xmobarPP {
+     ppCurrent         = xmobarColor "#458588" "" . wrap "[" "]"
+   , ppTitle           = xmobarColor "#b3afc2" "" . shorten 30
+   , ppHidden          = xmobarColor "#83a598" "" . wrap "*" ""    -- Hidden workspaces
+   , ppHiddenNoWindows = xmobarColor "#928374" ""                  -- Hidden workspaces (no windows)
+   , ppVisible         = xmobarColor "#98971a" ""                  -- Visible but not current workspace
+   , ppUrgent          = xmobarColor "#C45500" "" . wrap "!" "!"   -- Urgent workspace
+   , ppSep             =  "<fc=#888> <fn=1>|</fn> </fc>"           -- Separator character
+   , ppExtras          = [windowCount]
+   , ppOrder           = \(ws:l:t:wc) -> [ws, l, head wc, t]
+   , ppOutput          = hPutStrLn xmproc
+   }
+}
