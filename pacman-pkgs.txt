@@ -29,6 +29,7 @@ moc
 nitrogen
 npm
 openvpn
+pcmanfm
 pavucontrol
 pulseaudio-alsa
 qutebrowser
