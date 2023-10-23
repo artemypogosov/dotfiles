@@ -1,5 +1,6 @@
 checkupdates+aur
 fm6000
+rcm
 gruvbox-dark-gtk
 gruvbox-dark-icons-gtk
 gruvbox-icon-theme
