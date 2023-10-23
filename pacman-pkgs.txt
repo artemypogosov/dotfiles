@@ -46,6 +46,7 @@ lightdm-gtk-greeter
 spotify
 pulseaudio-alsa
 alsa-utils 
+npm
 alsa-plugins 
 alsa-lib 
 alsa-firmware
