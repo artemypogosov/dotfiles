@@ -1,5 +1,4 @@
 alacritty
-alsa-utils 
 arandr
 betterlockscreen
 blueman
