@@ -5,7 +5,7 @@
 	com = commit
 	last = "log -1"
 [user]
-	email = artemypogosov@gmail.com
-	name = Artem Pogosov
+	email = artem.pogosov@precisionformedicine.com
+	name  =  Artem Pogosov
 [core]
 	editor = emacs

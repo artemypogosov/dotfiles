@@ -17,6 +17,8 @@ nm-applet &
 volumeicon &
 blueman-applet &
 dropbox &
+setxkbmap -option "ctrl:nocaps" &
+xset r rate 400 50 &
 
 #sleep 2 &&
 

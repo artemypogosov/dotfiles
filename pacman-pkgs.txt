@@ -7,6 +7,9 @@ calcurse
 cmatrix
 dmenu
 docker
+dropbox
+google-chrome
+qutebrowser
 dunst
 docker-compose
 emacs
@@ -34,3 +37,8 @@ youtube-dl
 zathura
 zathura-pdf-poppler
 xmobar
+xmonad
+xmonad-contrib
+lightdm
+lightdm-gtk-greeter
+spotify
