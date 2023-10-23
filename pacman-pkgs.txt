@@ -13,7 +13,7 @@ dropbox
 dunst
 emacs
 file-roller
-flameshot-git
+flameshot
 galculator
 google-chrome
 gpick
