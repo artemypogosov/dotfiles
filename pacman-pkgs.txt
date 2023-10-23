@@ -19,6 +19,8 @@ galculator
 guake
 htop
 kitty
+gpick
+lightdm-gtk-greeter-settings
 lxappearance-gtk3
 lxqt-powermanagement
 moc
