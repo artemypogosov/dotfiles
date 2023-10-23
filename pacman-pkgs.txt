@@ -29,8 +29,9 @@ moc
 nitrogen
 npm
 openvpn
-pcmanfm
 pavucontrol
+pcmanfm
+picom
 pulseaudio-alsa
 qutebrowser
 ranger
