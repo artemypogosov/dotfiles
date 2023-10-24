@@ -43,6 +43,7 @@ trayer
 tree
 unclutter
 upower
+vlc
 volumeicon
 xmobar
 xmonad
