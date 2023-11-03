@@ -44,7 +44,6 @@ tree
 unclutter
 upower
 vlc
-volumeicon
 xmobar
 xmonad
 xmonad-contrib
