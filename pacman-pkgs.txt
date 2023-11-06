@@ -23,6 +23,7 @@ leiningen
 lightdm
 lightdm-gtk-greeter
 lightdm-gtk-greeter-settings
+lsof
 lxappearance-gtk3
 lxqt-powermanagement
 moc
