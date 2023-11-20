@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cupd=$(checkupdates+aur | wc -l)
+cupd=$(checkupdates-with-aur | wc -l)
 echo "$cupd"

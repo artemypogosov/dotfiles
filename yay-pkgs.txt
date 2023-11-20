@@ -1,4 +1,4 @@
-checkupdates+aur
+checkupdates-with-aur
 fm6000
 rcm
 gruvbox-dark-gtk
