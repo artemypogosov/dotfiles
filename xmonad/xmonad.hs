@@ -50,7 +50,6 @@ import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
 
 -- FIX FLOAT BEHAVIOR
 import XMonad.Hooks.RefocusLast (refocusLastLayoutHook, refocusLastWhen, isFloat)
-import XMonad.Layout.TrackFloating
 
 -- HOOKS
 import XMonad.Hooks.ManageDocks(docks, avoidStruts, ToggleStruts(..))
@@ -186,7 +185,7 @@ myTabs = renamed [Replace "tabs"]
 myFull = renamed [Replace "full"]
   $ Full
 
-myLayoutHook = refocusLastLayoutHook . trackFloating $ avoidStruts $ toggleLayouts myFloat $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ lessBorders Screen myLayouts
+myLayoutHook = refocusLastLayoutHook $ avoidStruts $ toggleLayouts myFloat $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ lessBorders Screen myLayouts
   where
     myLayouts = myTall ||| myMirror ||| myGrid ||| myFull ||| myFloat ||| myTabs
 
