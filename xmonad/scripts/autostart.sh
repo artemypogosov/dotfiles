@@ -14,7 +14,7 @@ nitrogen --restore &
 unclutter --timeout 10 &
 guake &
 nm-applet &
-volumeicon &
+#volumeicon &
 blueman-applet &
 dropbox &
 setxkbmap -option "ctrl:nocaps" &
