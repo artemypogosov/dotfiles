@@ -1,88 +1,96 @@
 Config {
-        --- appearance
+       --- APPEARANCE
+       --------------
+       font = "Ubuntu Bold 11",
+       additionalFonts = ["Mononoki Nerd Font 10", "Font Awesome 5 Free Solid 10" , "Font Awesome 5 Brands 10"],
+       bgColor = "#282828",
+       fgColor = "#928374",
+       alpha = 200,
+       position = Static { xpos = 11 , ypos = 8, width = 2538, height = 30 },
 
-        font = "Ubuntu Bold 10.5"
-        , additionalFonts = [ "Mononoki Nerd Font 10"
-                            , "Font Awesome 5 Free Solid 10"
-                            , "Font Awesome 5 Brands 10"]
-       , bgColor = "#282828"
-       , fgColor = "#928374"
-       , alpha = 200
-       , position = TopSize C 100 22
+       --- GENERAL
+       -----------
+       lowerOnStart     = False,
+       allDesktops      = True,
+       persistent       = True,
+       overrideRedirect = True,
+       iconRoot         = ".xmonad/xpm" -- default: ".",
 
-       --- general
+       --- COMMANDS TO RUN EVERY N SECONDS (1S = 10, 1H = 36000)
+       ---------------------------------------------------------
+       commands = [
 
-       , lowerOnStart     = False
-       , allDesktops      = True
-       , persistent       = True
-       , overrideRedirect = True
-       , iconRoot         = ".xmonad/xpm" -- default: "."
+       --- PRINTS OUT THE LEFT SIDE ITEMS SUCH AS WORKSPACES, LAYOUT, ETC.
+       -------------------------------------------------------------------
+       Run UnsafeStdinReader,
 
-       -- commands to run every N seconds (1s = 10, 1h = 36000)
+       -- TIME AND DATE
+       ----------------
+       Run Date "%b %_d - %H:%M " "date" 50,
 
-       , commands = [
+       -- KEYBOARD LAYOUT
+       ------------------
+       Run Kbd [("us", "US"), ("ru", "RU"), ("ua", "UA")],
 
-            -- time and date
-               Run Date "%b %_d - %H:%M " "date" 50
+       -- NETWORK
+       ----------
+       Run Network "enp5s0" ["-t"       , "<fn=1>\xf0ab</fn>  <rx>  <fn=1>\xf0aa</fn>  <tx>",
+                             "-S"       , "True",
+                             "-L"       , "1024",
+                             "-H"       , "102400",
+                             "--low"    , "#b3afc2",
+                             "--normal" , "orange",
+                             "--high"   , "red"] 10,
 
-            -- keyboard layout
-            ,  Run Kbd [("us", "US"), ("ru", "RU"), ("ua", "UA")]
+       -- CPU USAGE
+       ------------
+       Run Cpu [ "-t"       , "C:  [ <total>% ]",
+                 "-L"       , "25",
+                 "-H"       , "75",
+                 "--low"    , "#928374",
+                 "--normal" , "#fe8019",
+                 "--high"   , "#cc241d"] 20,
 
-            -- network
-            , Run Network "enp5s0" [  "-t"       , "<fn=1>\xf0ab</fn>  <rx>  <fn=1>\xf0aa</fn>  <tx>"
-                                    , "-S"       , "True"
-                                    , "-L"       , "1024"
-                                    , "-H"       , "102400"
-                                    , "--low"    , "#b3afc2"
-                                    , "--normal" , "orange"
-                                    , "--high"   , "red"
-                                   ] 10
+       -- CPU TEMPERATURE
+       ------------------
+       Run MultiCoreTemp ["-t", "T:  [ <avg>°C ]",
+                          "-L", "50",
+                          "-H", "80",
+                          "-l", "lightblue",
+                          "-n", "gray",
+                          "-h", "red",
+                          "--", "--mintemp", "20", "--maxtemp", "100"] 50,
 
-            -- cpu usage in percent
-            , Run Cpu [  "-t"       , "C:  [ <total>% ]"
-                       , "-L"       , "25"
-                       , "-H"       , "75"
-                       , "--low"    , "#928374"
-                       , "--normal" , "#fe8019"
-                       , "--high"   , "#cc241d"
-                      ] 20
+       -- RAM USAGE
+       ------------
+       Run Memory ["-t"       , "R: [ <usedratio>% ]",
+                   "-L"       , "50",
+                   "-H"       , "90",
+                   "--low"    , "#928374",
+                   "--normal" , "#fe8019",
+                   "--high"   , "#cc241d"] 20,
 
-            -- RAM usage
-            , Run Memory [  "-t"       , "R: [ <usedratio>% ]"
-                          , "-L"       , "50"
-                          , "-H"       , "90"
-                          , "--low"    , "#928374"
-                          , "--normal" , "#fe8019"
-                          , "--high"   , "#cc241d"
-                         ] 20
+       -- SPOTIFY
+       ----------
+       Run Mpris2 "spotify" [ "-t"        , "<artist> - <title>",
+                             "--nastring" , "",
+                             "-T"         , "50",
+                             "-E"         , "..."] 10,
 
-            -- spotify info
-            , Run Mpris2 "spotify" [ "-t", "<artist> - <title>"
-                                   , "--nastring" , ""
-                                   , "-T"         , "35"
-                                   , "-E"         , "..."
-                                ] 10
+       -- VOLUME LEVEL
+       ---------------
+       Run Volume "default" "Master" [ "-t"     , "<volume>% <status>",
+                                       "--"     ,
+                                       "--onc"  , "#b8bb26",
+                                       "--offc" , "#cc241d"] 5,
 
-            -- volume level
-            , Run Volume "default" "Master" [ "-t"     , "<volume>% <status>"
-                                            , "--"
-                                            , "--onc"  , "#b8bb26"
-                                            , "--offc" , "#cc241d"
-                                            ] 5
-            -- , Run Wireless "" [ "-t", "<essid>" ] 10
-            -- runs custom script to check for pacman and aur updates
+       -- RUN SCRIPT TO CHECK FOR PACMAN AND AUR [YAY] UPDATES
+       -------------------------------------------------------
+       Run Com ".local/bin/pacupdate" [] "pacupdate" 36000],
 
-            , Run Com ".local/bin/pacupdate" [] "pacupdate" 36000
+       sepChar  = "%",
+       alignSep = "}{",
 
-            , Run MultiCoreTemp ["-t", "T:  [ <avg>°C ]",
-                                 "-L", "50", "-H", "80",
-                                 "-l", "lightblue", "-n", "gray", "-h", "red",
-                                 "--", "--mintemp", "20", "--maxtemp", "100"] 50
-
-             -- Prints out the left side items such as workspaces, layout, etc.
-            , Run UnsafeStdinReader
-            ]
-       , sepChar  = "%"
-       , alignSep = "}{"
-       , template = " %UnsafeStdinReader% }<action=`alacritty -e calcurse`>%date%</action>{%mpris2%   %default:Master% |  %multicoretemp%   <action=`alacritty -e htop`>%cpu%</action>   %memory%  |  U:  <action=`alacritty -e sudo pacman -Syu`>%pacupdate%</action>  :  %kbd% "
+       template = "   %UnsafeStdinReader% } <action=`alacritty -e calcurse`>%date%</action>
+                      {  %mpris2%   %default:Master% |  %multicoretemp%   <action=`alacritty -e htop`>%cpu%</action>   %memory%  |  U:  <action=`alacritty -e sudo pacman -Syu`>%pacupdate%</action>  |  %kbd%   "
        }
