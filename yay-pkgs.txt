@@ -1,15 +1,13 @@
 checkupdates-with-aur
 fm6000
-rcm
 gruvbox-dark-gtk
 gruvbox-dark-icons-gtk
 gruvbox-icon-theme
 gruvbox-material-gtk-theme-git
 gruvbox-material-icon-theme-git
 htim
-mattermost-desktop
 nerd-fonts-mononoki
 nerd-fonts-ubuntu-mono
 otf-font-awesome-5
-spotify
-vimiv-qt
+picom-ftlabs-git
+rcm
