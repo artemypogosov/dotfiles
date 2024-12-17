@@ -1,3 +1,20 @@
+#+title: XMonad Config
+#+PROPERTY: header-args :tangle xmonad.hs
+
+* TABLE OF CONTENTS :toc:
+- [[#imports][IMPORTS]]
+- [[#vars][VARS]]
+- [[#startup-hook][STARTUP HOOK]]
+- [[#windows-manipulation][WINDOWS MANIPULATION]]
+- [[#windows-spacing][WINDOWS SPACING]]
+- [[#windows-theme-][WINDOWS THEME ?]]
+- [[#layout][LAYOUT]]
+- [[#shortcuts][SHORTCUTS]]
+- [[#event-hook][EVENT HOOK]]
+- [[#main][MAIN]]
+
+* IMPORTS
+#+begin_src haskell
 -- BASE
 import XMonad
 import System.IO (hPutStrLn)
@@ -62,6 +79,9 @@ import Graphics.X11.ExtraTypes.XF86
 -- OTHER
 import Control.Monad (liftM2)
 
+#+end_src
+* VARS
+#+begin_src haskell
 -- VARS
 myModMask :: KeyMask
 myModMask = mod4Mask
@@ -103,7 +123,9 @@ myWorkspaces = ["web", "dev", "chat", "music", "other"]
 
 windowCount :: X (Maybe String)
 windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
-
+#+end_src
+* STARTUP HOOK
+#+begin_src haskell
 myStartupHook :: X ()
 myStartupHook = do
   spawn "killall trayer"
@@ -113,7 +135,10 @@ myStartupHook = do
   -- spawnOnce "$HOME/Scripts/fix-mic-led.sh"
   setDefaultCursor xC_left_ptr
   setWMName "LG3D"
+#+end_src
 
+* WINDOWS MANIPULATION
+#+begin_src haskell
 -- window manipulations
 myManageHook = composeAll . concat $
     [ [isDialog       --> doCenterFloat]
@@ -140,11 +165,15 @@ myManageHook = composeAll . concat $
     -- my3Shifts = ["Inkscape"]
     -- my4Shifts = []
     -- my5Shifts = ["Gimp", "feh"]
-
+#+end_src
+* WINDOWS SPACING
+#+begin_src haskell
 -- If fewer than two windows. So a single window has no gaps.
 mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
 mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
-
+#+end_src
+* WINDOWS THEME ?
+#+begin_src haskell
 -- Setting colors for tabs layout and tabs sublayout.
 myTabTheme = def { fontName            = myFont
                  , activeColor         = "#928374"
@@ -154,7 +183,9 @@ myTabTheme = def { fontName            = myFont
                  , activeTextColor     = "#282c34"
                  , inactiveTextColor   = "#d0d0d0"
                  }
-
+#+end_src
+* LAYOUT
+#+begin_src haskell
 myTall = renamed [Replace "tall"]
   $ windowNavigation
   $ subLayout [] (smartBorders Simplest)
@@ -186,7 +217,9 @@ myFull = renamed [Replace "full"]
 myLayoutHook = refocusLastLayoutHook $ avoidStruts $ toggleLayouts myFloat $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ lessBorders Screen myLayouts
   where
     myLayouts = myTall ||| myMirror ||| myGrid ||| myFull ||| myFloat ||| myTabs
-
+#+end_src
+* SHORTCUTS
+#+begin_src haskell
 myKeys c = mkNamedKeymap c $
   -- General
   [ ("M-C-r",                  addName "Recompile XMonad"       $ spawn "xmonad --recompile")
@@ -243,11 +276,15 @@ myKeys c = mkNamedKeymap c $
   , ("<XF86MonBrightnessUp>",   addName "Brightness level up"   $ spawn "brightnessctl set +5%")
   , ("<XF86MonBrightnessDown>", addName "Brightness level down" $ spawn "brightnessctl set 5%-")]
   where nonNSP = WSIs (return (\ws -> W.tag ws /= "NSP"))
-
+#+end_src
+* EVENT HOOK
+#+begin_src haskell
 myEventHook = refocusLastEventHook <+> hintsEventHook
     where
         refocusLastEventHook = refocusLastWhen isFloat
-
+#+end_src
+* MAIN
+#+begin_src haskell
 main :: IO ()
 main = do
   xmproc <- spawnPipe "xmobar $HOME/.config/xmobar/xmobarrc"
@@ -277,3 +314,4 @@ main = do
    , ppOutput          = hPutStrLn xmproc
    }
 }
+#+end_src

@@ -3,9 +3,12 @@
 # Cursor active at boot
 xsetroot -cursor_name left_ptr &
 
+# Remap ecsape to capslock button
+#setxkbmap -option caps:escape &
+
 # Starting applications at boot time
 
-picom --legacy-backends &
+picom &
 dunst &
 udiskie &
 lxqt-powermanagement &
@@ -17,7 +20,8 @@ nm-applet &
 #volumeicon &
 blueman-applet &
 dropbox &
-setxkbmap -option "ctrl:nocaps" &
+#setxkbmap -option "ctrl:nocaps" &
+setxkbmap -option caps:escape &
 xset r rate 400 50 &
 
 #sleep 2 &&
