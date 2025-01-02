@@ -4,8 +4,6 @@ betterlockscreen
 blueman
 brightnessctl
 calcurse
-cmatrix
-dmenu
 docker
 docker-compose
 dropbox
@@ -23,7 +21,6 @@ lightdm-gtk-greeter
 lightdm-gtk-greeter-settings
 lsof
 lxqt-powermanagement
-moc
 nitrogen
 npm
 nwg-look
