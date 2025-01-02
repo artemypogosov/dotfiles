@@ -12,6 +12,7 @@ export HISTCONTROL=ignoreboth:erasedups
 export EDITOR='emacs'
 export VISUAL='emacs'
 
+# Shell prompt template
 PS1='[\u@\h \W]\$ '
 
 if [ -d "$HOME/.bin" ] ;
@@ -26,36 +27,15 @@ fi
 bind "set completion-ignore-case on"
 
 ### ALIASES
-
-## START OF PFM ALIASES --------------------------------------------------
-
-##alias pfm-figwheel-clear-port='sudo kill -9 `sudo lsof -t -i:3451`'
-##alias pfm-figwheel-start-repl='FIGWHEEL_SERVER_PORT=3499 NREPL_PORT=8333 lein repl'
-
-alias pfm-hard-rebuild='make quick_stop down volumes/delete/all volumes/delete/config init_env_file up/from_scratch bdm/setup frontend2/setup frontend2/clean frontend2/install switch_to_clojure_repl'
-alias pfm-soft-rebuild='make quick_stop down init_env_file up/from_scratch frontend2/setup frontend2/clean frontend2/install switch_to_clojure_repl'
-
-alias pfm-setup-frontend='make frontend2/setup frontend2/clean frontend2/install'
-alias pfm-run-frontend-repl='make frontend2/repl'
-alias pfm-run-backend-repl='make quick_stop down up switch_to_clojure_repl'
-
-##alias pfm-delete-db-start-repl='make quick_stop down volumes/delete/db volumes/delete/storage up switch_to_clojure_repl'
-alias pfm-setup-db='(cd ../demo ; make bdm/setup ; cd ../frontend ; pfm-figwheel-start-repl)'
-
-
-alias pfm-pull-revamp='git pull origin qb-java-revamp-ui'
-
-## END OF PFM ALIASES --------------------------------------------------
+###########
 
 ## ls
 alias ls='ls --color=auto'
-alias la='ls -a'
 alias ll='ls -la'
-alias l='ls'
-alias l.="ls -A | egrep '^\.'"
+alias ls.="ls -A | egrep '^\.'"
 
 
-## Colorize the grep command output for ease of use (good for log files)##
+## Colorize the grep command output for ease of use (good for log files)
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
@@ -64,12 +44,13 @@ alias fgrep='fgrep --color=auto'
 alias df='df -h'
 
 ## Free
-alias free="free -mt"
+alias free="free -th"
 
 ## Userlist
 alias userlist="cut -d: -f1 /etc/passwd"
 
 ## Aliases for software managment
+## Passing two --refresh or -y flags will force a refresh of all package lists even if they appear to be up to date.
 alias update='sudo pacman -Syyu'
 
 ## Cleanup orphaned packages
@@ -89,14 +70,14 @@ alias tozsh="sudo chsh $USER -s /bin/zsh && echo 'Now log out.'"
 alias hw="hwinfo --short"
 
 ## Get fastest mirrors in your neighborhood
-alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
-alias mirrord="sudo reflector --latest 30 --number 10 --sort delay --save /etc/pacman.d/mirrorlist"
-alias mirrors="sudo reflector --latest 30 --number 10 --sort score --save /etc/pacman.d/mirrorlist"
-alias mirrora="sudo reflector --latest 30 --number 10 --sort age --save /etc/pacman.d/mirrorlist"
+#alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
+#alias mirrord="sudo reflector --latest 30 --number 10 --sort delay --save /etc/pacman.d/mirrorlist"
+#alias mirrors="sudo reflector --latest 30 --number 10 --sort score --save /etc/pacman.d/mirrorlist"
+#alias mirrora="sudo reflector --latest 30 --number 10 --sort age --save /etc/pacman.d/mirrorlist"
 
 ## Our experimental - best option for the moment
-alias mirrorx="sudo reflector --age 6 --latest 20  --fastest 20 --threads 5 --sort rate --protocol https --save /etc/pacman.d/mirrorlist"
-alias mirrorxx="sudo reflector --age 6 --latest 20  --fastest 20 --threads 20 --sort rate --protocol https --save /etc/pacman.d/mirrorlist"
+#alias mirrorx="sudo reflector --age 6 --latest 20  --fastest 20 --threads 5 --sort rate --protocol https --save /etc/pacman.d/mirrorlist"
+#alias mirrorxx="sudo reflector --age 6 --latest 20  --fastest 20 --threads 20 --sort rate --protocol https --save /etc/pacman.d/mirrorlist"
 
 ## Mounting the folder Public for exchange between host and guest on virtualbox
 alias vbm="sudo /usr/local/bin/arcolinux-vbox-share"
@@ -130,10 +111,6 @@ alias oxmonad="$EDITOR ~/.dotfiles/xmonad/xmonad.hs"
 
 #systeminfo
 alias probe="sudo -E hw-probe -all -upload"
-
-#shutdown or reboot
-alias ssn="sudo shutdown now"
-alias sr="sudo reboot"
 
 #give the list of all installed desktops - xsessions desktops
 alias xs="ls /usr/share/xsessions"
@@ -171,9 +148,6 @@ fm6000 -r -c "random"
 # Temp fix for layouts
 setxkbmap us
 
-# Doom emacs
+# Doom emacs [use 'doom <command>' to run commands]
  export PATH="$HOME/.emacs.d/bin:$PATH"
-
-# Set PFM NPM_AUTH_TOKEN
-export NPM_AUTH_TOKEN=jkSufCaf73J3LY3uXbVM
 
