@@ -10,25 +10,20 @@ import XMonad.Util.Run (spawnPipe)
 import XMonad.Util.EZConfig (removeKeysP, mkNamedKeymap)
 import XMonad.Util.Cursor
 import XMonad.Util.NamedActions
-import XMonad.Util.NamedScratchpad
+--import XMonad.Util.NamedScratchpad (use for kitty as replacement for guake)
 
 -- ACTIONS
 import XMonad.Actions.CopyWindow (kill1)
-import XMonad.Actions.WithAll (killAll)
 import XMonad.Actions.WithAll (sinkAll, killAll)
 import XMonad.Actions.CycleWS (Direction1D(..), moveTo, shiftTo, WSType(..), nextScreen, prevScreen)
 
--- DATA
-import Data.Monoid
-import qualified Data.Map.Strict as M
-import Data.Ratio -- this makes the '%' operator available
-
 -- LAYOUT
-import XMonad.Layout.SimplestFloat
-import XMonad.Layout.ResizableTile
+import XMonad.Layout.Grid
 import XMonad.Layout.Tabbed
+import XMonad.Layout.Simplest
+import XMonad.Layout.ResizableTile
 
--- LAYOUTS MODIFIERS
+-- LAYOUT MODIFIERS
 import XMonad.Layout.LayoutModifier
 import XMonad.Layout.LimitWindows (limitWindows)
 import XMonad.Layout.MultiToggle (mkToggle, EOT(EOT), (??))
@@ -38,12 +33,7 @@ import XMonad.Layout.Gaps
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Renamed
 import XMonad.Layout.WindowNavigation
-import XMonad.Layout.Grid
-import XMonad.Layout.Simplest
-import XMonad.Layout.SimplestFloat
-import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Spacing
-import XMonad.Layout.Spiral (spiral)
 import XMonad.Layout.SubLayouts
 import XMonad.Layout.ToggleLayouts as T
 import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
@@ -55,7 +45,7 @@ import XMonad.Hooks.RefocusLast (refocusLastLayoutHook, refocusLastWhen, isFloat
 import XMonad.Hooks.ManageDocks(docks, avoidStruts, ToggleStruts(..))
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.EwmhDesktops
-import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat, doCenterFloat, isDialog)
+import XMonad.Hooks.ManageHelpers (doCenterFloat, isDialog)
 import XMonad.Hooks.DynamicLog
 import Graphics.X11.ExtraTypes.XF86
 
@@ -86,18 +76,18 @@ myEmacs = "emacsclient -c -a 'emacs' "
 
 -- border color of normal windows
 myNormColor :: String
-myNormColor   = "#000000"  -- Border color of normal windows
+myNormColor   = "#000000"
 
 -- border color of focused windows
 myFocusColor :: String
-myFocusColor  = "#cc241d"  -- Border color of focused windows
+myFocusColor  = "#cc241d"
 
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = False
+
 myClickJustFocuses :: Bool
 myClickJustFocuses = False
 
--- Change workspaces when I got two 27 inch monitors
 myWorkspaces :: [String]
 myWorkspaces = ["web", "dev", "chat", "music", "other"]
 
@@ -106,12 +96,7 @@ windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace
 
 myStartupHook :: X ()
 myStartupHook = do
-  spawn "killall trayer"
-  spawnOnce "$HOME/.xmonad/scripts/autostart.sh"
-  spawn "sleep 2 && trayer --edge bottom --align right --widthtype request --padding 5 --SetDockType true --SetPartialStrut false --expand true --monitor 1 --transparent true --alpha 256 --height 20"
   spawnOnce "$HOME/Scripts/init-us.sh"
-  -- spawnOnce "$HOME/Scripts/fix-mic-led.sh"
-  setDefaultCursor xC_left_ptr
   setWMName "LG3D"
 
 -- window manipulations
@@ -119,41 +104,27 @@ myManageHook = composeAll . concat $
     [ [isDialog       --> doCenterFloat]
     , [className =? c --> doCenterFloat | c <- myCFloats]
     , [title     =? t --> doFloat       | t <- myTFloats]
-    , [resource  =? r --> doFloat       | r <- myRFloats]
     , [resource  =? i --> doIgnore      | i <- myIgnores]
-   -- , [(className =? x <||> title =? x <||> resource =? x) --> doShiftAndGo "web" | x <- my1Shifts]
-    , [(className =? x <||> title =? x <||> resource =? x) --> doShiftAndGo "dev" | x <- my2Shifts]
-    -- , [(className =? x <||> title =? x <||> resource =? x) --> doShiftAndGo "\61947" | x <- my3Shifts]
-    -- , [(className =? x <||> title =? x <||> resource =? x) --> doShiftAndGo "\61635" | x <- my4Shifts]
-    -- , [(className =? x <||> title =? x <||> resource =? x) --> doShiftAndGo "\61502" | x <- my5Shifts]
+--  , [(className =? x <||> title =? x <||> resource =? x) --> doShiftAndGo "web"   | x <- my1Shifts]
+    , [(className =? x <||> title =? x <||> resource =? x) --> doShiftAndGo "dev"   | x <- my2Shifts]
+    , [(className =? x <||> title =? x <||> resource =? x) --> doShiftAndGo "chat"  | x <- my3Shifts]
+    , [(className =? x <||> title =? x <||> resource =? x) --> doShiftAndGo "music" | x <- my4Shifts]
     ]
   where
     doShiftAndGo = doF . liftM2 (.) W.greedyView W.shift
     myCFloats = ["confirm", "file_progress", "download", "error", "notification"
                , "toolbar", "Oracle VM VirtualBox Manager", "jetbrains-idea"
-               , "Arandr", "Galculator", "guake-toggle", "Guake"]
+               , "Arandr", "Galculator"]
     myTFloats = ["Downloads", "Save As..."]
-    myRFloats = []
     myIgnores = ["desktop_window"]
-    -- my1Shifts = ["Google-chrome", "qutebrowser"]
+ -- my1Shifts = ["Google-chrome", "qutebrowser"]
     my2Shifts = ["Emacs", "idea"]
-    -- my3Shifts = ["Inkscape"]
-    -- my4Shifts = []
-    -- my5Shifts = ["Gimp", "feh"]
+    my3Shifts = ["telegram-desktop"]
+    my4Shifts = ["Spotify"]
 
 -- If fewer than two windows. So a single window has no gaps.
 mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
 mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
-
--- Setting colors for tabs layout and tabs sublayout.
-myTabTheme = def { fontName            = myFont
-                 , activeColor         = "#928374"
-                 , activeBorderColor   = "#928374"
-                 , inactiveColor       = "#32302f"
-                 , inactiveBorderColor = "#32302f"
-                 , activeTextColor     = "#282c34"
-                 , inactiveTextColor   = "#d0d0d0"
-                 }
 
 myTall = renamed [Replace "tall"]
   $ windowNavigation
@@ -162,30 +133,18 @@ myTall = renamed [Replace "tall"]
   $ mySpacing 5
   $ ResizableTall 1 (3/100) (1/2) []
 
-myGrid = renamed [Replace "grid"]
-  $ mySpacing 5
-  $ limitWindows 12
-  $ Grid
-
-myFloat = renamed [Replace "float"]
-  $ mySpacing 5
-  $ limitWindows 12
-  $ simplestFloat
-
 myMirror = renamed [Replace "mirror tall"]
-  $ limitWindows 12
+  $ limitWindows 5
   $ Mirror myTall
 
-myTabs = renamed [Replace "tabs"]
-  $ noBorders
-  $ tabbed shrinkText myTabTheme
+myGrid = renamed [Replace "grid"]
+  $ mySpacing 5
+  $ limitWindows 4
+  $ Grid
 
-myFull = renamed [Replace "full"]
-  $ Full
-
-myLayoutHook = refocusLastLayoutHook $ avoidStruts $ toggleLayouts myFloat $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ lessBorders Screen myLayouts
+myLayoutHook = refocusLastLayoutHook $ avoidStruts $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ lessBorders Screen myLayouts
   where
-    myLayouts = myTall ||| myMirror ||| myGrid ||| myFull ||| myFloat ||| myTabs
+    myLayouts = myTall ||| myMirror ||| myGrid
 
 myKeys c = mkNamedKeymap c $
   -- General
@@ -254,10 +213,10 @@ main = do
   xmonad $ ewmhFullscreen $ addDescrKeys ((mod4Mask, xK_F1), xMessage) myKeys $ docks  def  {
     terminal              = myTerminal
   , modMask               = myModMask
-  , startupHook           = myStartupHook
   , manageHook            = myManageHook
   , layoutHook            = myLayoutHook
   , workspaces            = myWorkspaces
+  , startupHook           = myStartupHook
   , borderWidth           = myBorderWidth
   , normalBorderColor     = myNormColor
   , handleEventHook       = myEventHook
