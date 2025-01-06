@@ -187,7 +187,9 @@ myKeys c = mkNamedKeymap c $
   , ("M-d v",                  addName "Emacsclient Vterm"   $ spawn (myEmacs ++ ("--eval '(+vterm/here nil)'")))]
 
   ^++^ -- Screenshot
-  [ ("C-S-<Print>",            addName "Flameshot GUI"       $ spawn "flameshot gui")]
+  [ ("<Print>",                addName "Flameshot GUI"                  $ spawn "flameshot gui")
+  , ("C-<Print>",              addName "Flameshot copy focused screen"  $ spawn "flameshot screen -n 0 -c")
+  , ("C-S-<Print>",            addName "Flameshot save focused screen"  $ spawn "flameshot screen -n 0 -p ~/Pictures/Screenshots")]
 
   ^++^ -- Multimedia
   [ ("<XF86AudioMute>",        addName "Mute audio"   $ spawn "amixer set Master toggle")
