@@ -10,4 +10,3 @@ nerd-fonts-mononoki
 nerd-fonts-ubuntu-mono
 otf-font-awesome-5
 picom-ftlabs-git
-rcm

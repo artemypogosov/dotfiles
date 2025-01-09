@@ -1,0 +1,7 @@
+# Ignore list for GNU Stow
+
+\.git
+misc
+LICENSE
+^/.*\.org
+packages-list

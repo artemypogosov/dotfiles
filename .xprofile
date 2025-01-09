@@ -1,0 +1,22 @@
+# Cursor active at boot
+xsetroot -cursor_name left_ptr &
+
+# Starting applications at boot time
+killall trayer &
+sleep 2 && trayer --edge bottom --align right --widthtype request --padding 5 --SetDockType true --SetPartialStrut false --expand true --monitor 1 --transparent true --alpha 256 --height 20 &
+picom &
+dunst &
+udiskie &
+lxqt-powermanagement &
+emacs --daemon &
+nitrogen --restore &
+unclutter --timeout 10 &
+nm-applet &
+blueman-applet &
+dropbox &
+
+# Replace capslock with esc
+setxkbmap -option caps:escape &
+
+# Increase typing rate
+xset r rate 400 50 &
